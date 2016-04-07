@@ -1,0 +1,18 @@
+Networking
+	1. View attendee list, mutual connections & personal profiles.
+	2. Send private messages & schedule 1 to 1 meetings.
+	3. Sync attendee's social media profiles (Facebook, Twitter & LinkedIn).
+
+Comments & Questions
+	1. Live questions & comments for realtime feedback
+	2. create discussion thread
+	3. "upvote" questions and comments
+
+Agenda & Content Management
+	1. create attendee list or group list
+	2. agenda tracks
+	3. interactive map
+
+Exhibitor & Sponsors
+	1. Exhibitors can upload material to provide extra information.
+	2. Sponsors list for the event and locate exhibitors on venue map

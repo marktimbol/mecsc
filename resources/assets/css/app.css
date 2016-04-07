@@ -1,0 +1,72 @@
+h1 {
+  font-size: 30px; }
+
+h3 {
+  font-size: 20px; }
+
+.aside {
+  background: #F4F4F4; }
+  .aside ul {
+    list-style: none;
+    padding-left: 0; }
+    .aside ul li a {
+      color: #333;
+      display: block;
+      padding: 10px 0px 10px 10px; }
+      .aside ul li a:hover {
+        text-decoration: none;
+        background: #FAFAFA; }
+
+.Speakers .Speaker {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.Speaker__image {
+  margin-right: 1em; }
+
+.Speaker__information {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 0.8;
+  -ms-flex: 0.8;
+  flex: 0.8; }
+
+.Speaker__name {
+  font-size: 16px;
+  margin-bottom: 5px; }
+
+.Speaker__designation {
+  font-size: 14px;
+  margin: 5px 0px; }
+
+.Speaker__action {
+  -webkit-flex: 0.2;
+  -ms-flex: 0.2;
+  flex: 0.2;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  text-align: right; }
+
+.equal-height {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.navbar {
+  border-radius: 0 !important; }
+
+.alert {
+  border-radius: 0 !important; }
+
+.timeline-footer .label-info a {
+  color: white; }
+  .timeline-footer .label-info a:hover {
+    color: white; }
+
+/*# sourceMappingURL=app.css.map */

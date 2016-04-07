@@ -1,0 +1,31 @@
+.Speakers {
+	.Speaker {
+		display: flex;
+	}	
+}
+
+.Speaker__image {
+	margin-right: 1em;
+}
+
+.Speaker__information {
+	display: flex;
+	flex-direction: column;
+	flex: 0.8
+}
+
+.Speaker__name {
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+
+.Speaker__designation {
+	font-size: 14px;
+	margin: 5px 0px;
+}
+
+.Speaker__action {
+	flex: 0.2;
+	align-self: center;
+	text-align: right;
+}

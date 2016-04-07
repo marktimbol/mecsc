@@ -1,0 +1,22 @@
+Agenda
+	title
+	date
+	time
+	venue
+	category
+	description
+
+agenda_speakers
+	agenda_id
+	speaker_id
+
+agenda_attendees
+	agenda_id
+	user_id
+
+comments
+	commentable_id
+	commentable_type
+	body
+	
+

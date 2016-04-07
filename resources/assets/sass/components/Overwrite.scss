@@ -1,0 +1,18 @@
+.navbar {
+	border-radius: 0 !important;
+}
+
+.alert {
+	border-radius: 0 !important;
+}
+
+.timeline-footer {
+	.label-info {
+		a {
+			color: white;
+			&:hover {
+				color: white;
+			}
+		}
+	}
+}
