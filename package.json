@@ -4,6 +4,7 @@
     "gulp": "^3.8.8"
   },
   "dependencies": {
+    "algoliasearch": "^3.13.1",
     "bootstrap-sass": "^3.0.0",
     "immutable": "^3.7.6",
     "laravel-elixir": "^4.0.0",

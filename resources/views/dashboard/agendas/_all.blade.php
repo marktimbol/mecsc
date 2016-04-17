@@ -18,6 +18,10 @@
                             	<a href="{{ route('dashboard.agendas.show', $agenda->id) }}">
                             		{{ $agenda->title }}
                             	</a>
+                                <br /><br />
+                                <p class="text-muted">
+                                    {{ $agenda->venue }}
+                                </p>
                             </h3>
 
                             <div class="timeline-body">

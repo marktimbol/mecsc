@@ -1,0 +1,37 @@
+.tt-menu {
+	width: 100%;
+	background: white;
+	border: 1px solid #ddd;
+}
+
+.Suggestion {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px;
+
+	&.tt-cursor {
+		background: #ddd;
+	}
+}
+
+.Suggestion__figure {
+	flex: 0.1;
+	margin-right: 10px;
+}
+
+.Suggestion__content {
+	flex: 0.9;
+}
+
+.Suggestion__heading {
+	font-size: 16px;
+}
+
+.Suggestion--no-result {
+	padding: 10px;
+}
+
+.twitter-typeahead {
+	display: block !important;
+}

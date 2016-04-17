@@ -2,26 +2,106 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var update = require('react-addons-update');
 var _ = require('lodash');
+var algoliasearch = require('algoliasearch');
 
 var csrf_token = $('meta[name="csrf_token"]').attr('content');
+
+var index;
 
 var Speakers = React.createClass({
 	getInitialState() {
 		return {
+			searchKey: '',
 			agendaSpeakers: window.agenda.speakers,
-			availableSpeakers: window.speakers,
+			availableSpeakers: [],
 		}
 	},
 
-	addSpeaker(selectedSpeaker) {
-		var index = _.findIndex(this.state.availableSpeakers, function(availableSpeaker) {
-		    return availableSpeaker.id == selectedSpeaker.id;
-		});
+	componentDidMount() {
+		var client = algoliasearch("CU6OGKCO5Z", '9230fbbc6127c4250e0362facfe0f019');
+		index = client.initIndex('mecsc_speakers');
 
+		this.enableTypeahead();
+
+		this.refreshAvailableSpeakers();
+	},
+
+	enableTypeahead() {
+		$('.typeahead')
+			.typeahead({
+				minLength: 1,
+				highlight: true,
+				hint: false,
+			}, {
+				name: 'speakers',
+				source: index.ttAdapter(),
+				displayKey: 'name',
+				templates: {
+					notFound: function() {
+						return (
+							'<div class="Suggestion--no-result"><p>No result found.</p></div>'
+						)
+					},
+					suggestion: function(hit) {
+						var imagePath = '/dist/img/user1-128x128.jpg';
+						return (
+							'<div class="Suggestion">' +
+								'<div class="Suggestion__figure">' +
+									'<img src="'+imagePath+'" class="img-responsive" alt="" title="" />' +
+								'</div>' +
+
+								'<div class="Suggestion__content">' +
+									'<h3 class="Suggestion__heading">' + hit._highlightResult.name.value + '</h3>' +
+									'<address>' +
+										'<p>' +
+											hit.email +
+										'</p>' +
+
+										'<p>' +
+											hit.designation + ' at ' + hit.company +
+										'</p>' +										
+									'</address>' +
+								'</div>' +
+							'</div>' 
+						)
+					}
+				
+				}
+			})
+			.on('typeahead:select', function(e, suggestion) {
+				this.setState({
+					searchKey: suggestion.name
+				});
+			}.bind(this));	
+	},
+
+	handleChangeSearch(e) {
+		this.setState({ searchKey: e.target.value });
+	},
+
+	searchSpeaker(e) {
+		e.preventDefault();
+		$('.typeahead').typeahead('close');
+
+		index.search(this.state.searchKey, null, function(error, result) {
+		  	this.setState({ availableSpeakers: result.hits });
+		}.bind(this), { hitsPerPage: 10, page: 0 });
+	},
+
+	refreshAvailableSpeakers() {
+		this.setState({ searchKey: '' });
+
+		index.search('', null, function(error, result) {
+		  	this.setState({ availableSpeakers: result.hits });
+		}.bind(this), { hitsPerPage: 10, page: 0 });
+	},
+
+	addSpeaker(selectedSpeaker) {
 		this.setState({
 			agendaSpeakers: this.state.agendaSpeakers.concat(selectedSpeaker),
-			availableSpeakers: update(this.state.availableSpeakers, {$splice: [[index, 1]]})
 		});
+
+		this.refreshAvailableSpeakers();
 
 		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
 
@@ -41,14 +121,15 @@ var Speakers = React.createClass({
 	},
 
 	removeSpeaker(selectedSpeaker) {
-		var index = _.findIndex(this.state.agendaSpeakers, function(agendaSpeaker) {
+		var speakerIndex = _.findIndex(this.state.agendaSpeakers, function(agendaSpeaker) {
 		    return agendaSpeaker.id == selectedSpeaker.id;
 		});
 
 		this.setState({
-			agendaSpeakers: update(this.state.agendaSpeakers, {$splice: [[index, 1]]}),
-			availableSpeakers: this.state.availableSpeakers.concat(selectedSpeaker),
+			agendaSpeakers: update(this.state.agendaSpeakers, {$splice: [[speakerIndex, 1]]}),
 		});
+
+		this.refreshAvailableSpeakers();
 
 		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
 
@@ -92,7 +173,6 @@ var Speakers = React.createClass({
 					<div className="Speaker__action">
 						<button type="submit" 
 							className="btn btn-link"
-							value={speaker.id}
 							onClick={() => this.removeSpeaker(speaker)}>
 								<i className="fa fa-minus"></i>
 						</button>
@@ -102,6 +182,16 @@ var Speakers = React.createClass({
 		}.bind(this));		
 
 		var availableSpeakers = this.state.availableSpeakers.map(function(speaker) {
+
+			var isSpeakingOnThisAgenda = false;
+
+			this.state.agendaSpeakers.map(function(agendaSpeakers) {
+				if( agendaSpeakers.id === speaker.id )
+				{
+					isSpeakingOnThisAgenda = true;
+				}
+			});
+
 			var speakerUrl = '/dashboard/users/' + speaker.id;
 			return (
 				<li className="list-group-item Speaker" key={speaker.id}>
@@ -123,25 +213,44 @@ var Speakers = React.createClass({
 						</h6>
 					</div>
 
-					<div className="Speaker__action">
-						<a href="#" 
-							className="btn btn-link"
-							onClick={(e) => this.addSpeaker(speaker)}>
-								<i className="fa fa-plus"></i>
-						</a>
-					</div>
+					{ ! isSpeakingOnThisAgenda ?
+						<div className="Speaker__action">
+							<button type="submit" 
+								className="btn btn-link"
+								onClick={() => this.addSpeaker(speaker)}>
+									<i className="fa fa-plus"></i>
+							</button>
+						</div>
+						: ''
+					}
 				</li>   
 			);
 		}.bind(this));
 
 		return (
 			<div>
-				<h3>Speakers</h3>
+				<h3>People who will speak on this Agenda</h3>
 				<ul className="list-group">
          			{agendaSpeakers}
 				</ul>
 
 				<h3>Available Speakers</h3>
+				<form onSubmit={() => this.searchSpeaker}>
+					<div className="form-group">
+						<input 
+							type="text" 
+							placeholder="Find Speakers"
+							className="form-control typeahead"
+							value={this.state.searchKey}
+							onChange={this.handleChangeSearch}/>
+					</div>
+					<div className="form-group">
+						<button className="btn btn-default" onClick={this.searchSpeaker}>
+							<i className="fa fa-search"></i> Search
+						</button>
+					</div>
+				</form>
+
 				<ul className="list-group">
          			{availableSpeakers}
 				</ul>

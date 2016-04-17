@@ -159,6 +159,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        AlgoliaSearch\Laravel\AlgoliaServiceProvider::class,
 
     ],
 

@@ -33,6 +33,11 @@ elixir(function(mix) {
             'app.js',
    		], 'public/js/app.js')
 
+         .scripts([
+            bowerPath + 'handlebars/handlebars.js',
+            bowerPath + 'typeahead.js/dist/typeahead.jquery.js',
+         ], 'public/js/typeahead.js')
+
          .styles([
             bowerPath + 'admin-lte/plugins/datepicker/datepicker3.css',
             bowerPath + 'admin-lte/plugins/daterangepicker/daterangepicker-bs3.css',
@@ -57,6 +62,8 @@ elixir(function(mix) {
    		.version([
    			'public/css/app.css',
    			'public/js/app.js',
+
+            'public/js/typeahead.js',
 
             'public/css/datepicker.css',
             'public/js/datepicker.js',

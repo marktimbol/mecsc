@@ -15,6 +15,11 @@ class Company extends Model
         return $this->belongsToMany(Role::class, 'company_roles');
     }
 
+    // public function contacts()
+    // {
+    //     return $this->belongsToMany(User::class, 'company_contacts');
+    // }
+
     public function addRole($role_id)
     {
         return $this->roles()->attach($role_id);

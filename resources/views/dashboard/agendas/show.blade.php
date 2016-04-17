@@ -20,5 +20,6 @@
 @endsection
 
 @section('footer_scripts')
+	<script src="{{ elixir('js/typeahead.js') }}"></script>
 	<script src="/js/Speakers.js"></script>
 @endsection

@@ -17,24 +17,25 @@ class UserTableSeeder extends Seeder
         	'password'	=> bcrypt('marktimbol')
         ]);
 
-        $admin->roles()->attach(5);
+        $admin->roles()->attach(5); //Administrator
 
         $exhibitors = factory(App\User::class, 10)->create();
         foreach( $exhibitors as $user )
         {
-            $user->roles()->attach(2); // 2 => Speaker
+            $user->roles()->attach(2); // 2 => Exhibitor
         }
 
         $sponsors = factory(App\User::class, 10)->create();
         foreach( $sponsors as $user )
         {
-            $user->roles()->attach(3); // 3 => Speaker
+            $user->roles()->attach(3); // 3 => Sponsor
         }
 
-        $users = factory(App\User::class, 10)->create();
-        foreach( $users as $user )
+        $speakers = factory(App\User::class, 10)->create();
+        foreach( $speakers as $speaker )
         {
-            $user->roles()->attach(4); // 4 => Speaker
+            $speaker->pushToIndex();
+            $speaker->roles()->attach(4); // 4 => Speaker
         }
     }
 }
