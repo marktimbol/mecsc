@@ -39068,7 +39068,6 @@ var Speakers = React.createClass({
 			var _this2 = this;
 
 			var isSpeakingOnThisAgenda = false;
-
 			this.state.agendaSpeakers.map(function (agendaSpeakers) {
 				if (agendaSpeakers.id === speaker.id) {
 					isSpeakingOnThisAgenda = true;

@@ -111,9 +111,7 @@ var Speakers = React.createClass({
 			headers: {
 				'X-CSRF-Token': csrf_token,
 			},
-			success: function(response) {
-			
-			},
+			success: function(response) {},
 			error: function(xhr, status, err) {
 				console.log(err.toString());
 			}
@@ -139,9 +137,7 @@ var Speakers = React.createClass({
 			headers: {
 				'X-CSRF-Token': csrf_token,
 			},
-			success: function(response) {
-
-			},
+			success: function(response) {},
 			error: function(xhr, status, err) {
 				console.log(err.toString());
 			}
@@ -182,9 +178,7 @@ var Speakers = React.createClass({
 		}.bind(this));		
 
 		var availableSpeakers = this.state.availableSpeakers.map(function(speaker) {
-
 			var isSpeakingOnThisAgenda = false;
-
 			this.state.agendaSpeakers.map(function(agendaSpeakers) {
 				if( agendaSpeakers.id === speaker.id )
 				{

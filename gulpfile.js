@@ -52,6 +52,7 @@ elixir(function(mix) {
 
          .browserify('components/UserRoles.js')
          .browserify('components/CompanyRoles.js')
+         .browserify('components/CompanyContacts.js')
          .browserify('components/Speakers.js')
 
          .copy('bower_components/admin-lte/fonts', 'public/build/fonts')

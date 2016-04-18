@@ -27,9 +27,10 @@
 							</li>
 						</ul>	
 
-
 						<h3>Description</h3>
 						{!! $company->description !!}
+
+						<div id="CompanyContacts"></div>
 					</div>
 				</div>
 			</div>
@@ -39,4 +40,5 @@
 
 @section('footer_scripts')
     <script src="/js/CompanyRoles.js"></script>
+    <script src="/js/CompanyContacts.js"></script>
 @endsection     

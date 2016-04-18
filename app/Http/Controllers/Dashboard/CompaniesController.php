@@ -11,14 +11,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use JavaScript;
 use Mecsc\Repositories\CompanyRepository;
+use Mecsc\Repositories\UserRepository;
 
 class CompaniesController extends Controller
 {
 	protected $company;
+    protected $user;
 
-	public function __construct(CompanyRepository $company)
+	public function __construct(CompanyRepository $company, UserRepository $user)
 	{
 		$this->company = $company;
+        $this->user = $user;
 	}
 
     public function index()
@@ -32,7 +35,8 @@ class CompaniesController extends Controller
         JavaScript::put([
             'signedIn'  => Auth::check(),
             'company'  => $company,
-            'roles' => Role::all()
+            'roles' => Role::all(),
+            'users' => $this->user->all(),
         ]);
         return view('dashboard.companies.show', compact('company'));
     }

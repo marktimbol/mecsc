@@ -34,7 +34,7 @@ class User extends Authenticatable
     public static $autoIndex = false;
     public static $autoDelete = false;
     
-    public $indices = ['mecsc_speakers'];
+    public $indices = ['mecsc_users', 'mecsc_speakers'];
 
     public function roles()
     {
