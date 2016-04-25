@@ -19109,7 +19109,7 @@ var UserRoles = React.createClass({
 				});
 			}.bind(this),
 			error: function (xhr, status, err) {
-				console.log(err.toString());
+				console.log(err);
 			}.bind(this)
 		});
 	},
@@ -19123,7 +19123,6 @@ var UserRoles = React.createClass({
 				'X-CSRF-Token': csrf_token
 			},
 			success: function (response) {
-				console.log(response);
 				this.setState({
 					userRoles: response
 				});
@@ -19138,7 +19137,6 @@ var UserRoles = React.createClass({
 			var isCheck = false;
 
 			this.state.userRoles.map(function (userRole) {
-				console.log(userRole.id, role.id);
 				if (userRole.id == role.id) {
 					isCheck = true;
 				}

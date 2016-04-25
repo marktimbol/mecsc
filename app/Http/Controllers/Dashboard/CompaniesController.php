@@ -34,9 +34,8 @@ class CompaniesController extends Controller
     {
         JavaScript::put([
             'signedIn'  => Auth::check(),
-            'company'  => $company,
             'roles' => Role::all(),
-            'users' => $this->user->all(),
+            'company'  => $company,
         ]);
         return view('dashboard.companies.show', compact('company'));
     }

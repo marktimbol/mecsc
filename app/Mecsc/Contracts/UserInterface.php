@@ -10,13 +10,7 @@ interface UserInterface {
 	
 	public function store($data);
 
-	public function update($id, $data);
+	public function update($user, $data);
 
-	public function delete($id);
-
-	public function onlySpeakers();
-
-	public function get();
-
-	public function except($ids);
+	public function delete($user);
 }

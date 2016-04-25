@@ -12,5 +12,7 @@ interface SpeakerInterface {
 	
 	public function store($data);
 
-	public function delete($id);
+	public function update($speaker, $data);
+
+	public function delete($speaker);
 }

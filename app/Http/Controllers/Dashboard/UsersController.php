@@ -56,12 +56,23 @@ class UsersController extends Controller
 
     public function update($user, Request $request)
     {
-        if( ! $this->user->update($user->id, $request) )
+        if( ! $this->user->update($user, $request) )
         {
             return redirect()->back()->withInput();
         }
 
         flash()->success('User record has been successfully updated!');
         return redirect()->route('dashboard.users.show', $user->id);
+    }
+
+    public function destroy($user)
+    {
+        if( ! $this->user->delete($user) )
+        {
+            return redirect()->back();
+        }
+
+        flash()->success('User has been successfully deleted!');
+        return redirect()->route('dashboard.users.index');
     }
 }

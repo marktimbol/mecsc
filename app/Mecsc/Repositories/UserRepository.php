@@ -24,32 +24,14 @@ class UserRepository implements UserInterface {
 		return User::create($data->all()) ? true : false;
 	}
 
-	public function update($id, $data) {
-		$user = User::findOrFail($id);
+	public function update($user, $data)
+	{
 		$user->fill($data->all());
-
 		return $user->save() ? true : false;
 	}
 
-	public function delete($id)
+	public function delete($user)
 	{
-		return User::findOrFail($id)->delete();
-	}
-
-	public function onlySpeakers()
-	{
-		$this->availableSpeakers = User::speakers();
-		return $this;
-	}
-
-	public function except($ids)
-	{
-		$this->availableSpeakers = $this->availableSpeakers->whereNotIn('id', $ids);
-		return $this;
-	}
-	
-	public function get()
-	{
-		return $this->availableSpeakers->get();
+		return $user->delete();
 	}
 }

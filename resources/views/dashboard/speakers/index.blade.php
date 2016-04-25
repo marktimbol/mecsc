@@ -10,7 +10,7 @@
     <section class="content">
         <div class="row">
 			<div class="col-md-4">
-				@include('dashboard.users.forms._create', ['role_id' => 4])
+				@include('dashboard.speakers.forms._create')
 			</div>
 
 			<div class="col-md-8">

@@ -17,6 +17,7 @@ class CreateSpeakersTable extends Migration
             $table->string('name');
             $table->string('designation');
             $table->string('company');
+            $table->text('about');
             $table->timestamps();
         });
     }

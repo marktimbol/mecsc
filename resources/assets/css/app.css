@@ -17,15 +17,15 @@ h3 {
         text-decoration: none;
         background: #FAFAFA; }
 
-.Speakers .Speaker {
+.Users .User {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
 
-.Speaker__image {
+.User__image {
   margin-right: 1em; }
 
-.Speaker__information {
+.User__information {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -36,15 +36,15 @@ h3 {
   -ms-flex: 0.8;
   flex: 0.8; }
 
-.Speaker__name {
+.User__name {
   font-size: 16px;
   margin-bottom: 5px; }
 
-.Speaker__designation {
+.User__designation {
   font-size: 14px;
   margin: 5px 0px; }
 
-.Speaker__action {
+.User__action {
   -webkit-flex: 0.2;
   -ms-flex: 0.2;
   flex: 0.2;

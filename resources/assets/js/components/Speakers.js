@@ -9,7 +9,8 @@ var csrf_token = $('meta[name="csrf_token"]').attr('content');
 var index;
 
 var Speakers = React.createClass({
-	getInitialState() {
+	getInitialState()
+	{
 		return {
 			searchKey: '',
 			agendaSpeakers: window.agenda.speakers,
@@ -17,7 +18,8 @@ var Speakers = React.createClass({
 		}
 	},
 
-	componentDidMount() {
+	componentDidMount()
+	{
 		var client = algoliasearch("CU6OGKCO5Z", '9230fbbc6127c4250e0362facfe0f019');
 		index = client.initIndex('mecsc_speakers');
 
@@ -26,7 +28,8 @@ var Speakers = React.createClass({
 		this.refreshAvailableSpeakers();
 	},
 
-	enableTypeahead() {
+	enableTypeahead()
+	{
 		$('.typeahead')
 			.typeahead({
 				minLength: 1,
@@ -54,10 +57,6 @@ var Speakers = React.createClass({
 									'<h3 class="Suggestion__heading">' + hit._highlightResult.name.value + '</h3>' +
 									'<address>' +
 										'<p>' +
-											hit.email +
-										'</p>' +
-
-										'<p>' +
 											hit.designation + ' at ' + hit.company +
 										'</p>' +										
 									'</address>' +
@@ -75,39 +74,14 @@ var Speakers = React.createClass({
 			}.bind(this));	
 	},
 
-	handleChangeSearch(e) {
-		this.setState({ searchKey: e.target.value });
-	},
-
-	searchSpeaker(e) {
-		e.preventDefault();
-		$('.typeahead').typeahead('close');
-
-		index.search(this.state.searchKey, null, function(error, result) {
-		  	this.setState({ availableSpeakers: result.hits });
-		}.bind(this), { hitsPerPage: 10, page: 0 });
-	},
-
-	refreshAvailableSpeakers() {
-		this.setState({ searchKey: '' });
-
-		index.search('', null, function(error, result) {
-		  	this.setState({ availableSpeakers: result.hits });
-		}.bind(this), { hitsPerPage: 10, page: 0 });
-	},
-
-	addSpeaker(selectedSpeaker) {
-		this.setState({
-			agendaSpeakers: this.state.agendaSpeakers.concat(selectedSpeaker),
-		});
-
-		this.refreshAvailableSpeakers();
-
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
-
+	makeRequest(type, url, data)
+	{
 		$.ajax({
 			url: url,
-			type: 'POST',
+			type: type,
+			data: {
+				data,
+			},
 			headers: {
 				'X-CSRF-Token': csrf_token,
 			},
@@ -118,7 +92,44 @@ var Speakers = React.createClass({
 		});
 	},
 
-	removeSpeaker(selectedSpeaker) {
+	handleChangeSearch(e)
+	{
+		this.setState({ searchKey: e.target.value });
+	},
+
+	searchSpeaker(e)
+	{
+		e.preventDefault();
+		$('.typeahead').typeahead('close');
+
+		index.search(this.state.searchKey, null, function(error, result) {
+		  	this.setState({ availableSpeakers: result.hits });
+		}.bind(this), { hitsPerPage: 10, page: 0 });
+	},
+
+	refreshAvailableSpeakers()
+	{
+		this.setState({ searchKey: '' });
+
+		index.search('', null, function(error, result) {
+		  	this.setState({ availableSpeakers: result.hits });
+		}.bind(this), { hitsPerPage: 10, page: 0 });
+	},
+
+	addSpeaker(selectedSpeaker)
+	{
+		this.setState({
+			agendaSpeakers: this.state.agendaSpeakers.concat(selectedSpeaker),
+		});
+
+		this.refreshAvailableSpeakers();
+
+		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
+		this.makeRequest('POST', url, []);
+	},
+
+	removeSpeaker(selectedSpeaker)
+	{
 		var speakerIndex = _.findIndex(this.state.agendaSpeakers, function(agendaSpeaker) {
 		    return agendaSpeaker.id == selectedSpeaker.id;
 		});
@@ -144,29 +155,30 @@ var Speakers = React.createClass({
 		});
 	},
 
-	render() {
+	render()
+	{
 		var agendaSpeakers = this.state.agendaSpeakers.map(function(speaker) {
 			return (
-				<li className="list-group-item Speaker" key={speaker.id}>
-					<div className="Speaker__image">
+				<li className="list-group-item User" key={speaker.id}>
+					<div className="User__image">
 						<img src="/dist/img/user1-128x128.jpg" 
 							width="60" height="60" 
 							alt={speaker.name} title={speaker.name} 
 							className="img-circle" />
 					</div>
 
-					<div className="Speaker__information">
-						<h5 className="Speaker__name">
+					<div className="User__information">
+						<h5 className="User__name">
 							<a href="#">
 								{speaker.name}
 							</a>
 						</h5>
-						<h6 className="Speaker__designation">
+						<h6 className="User__designation">
 							{speaker.designation} at {speaker.company}
 						</h6>
 					</div>
 
-					<div className="Speaker__action">
+					<div className="User__action">
 						<button type="submit" 
 							className="btn btn-link"
 							onClick={() => this.removeSpeaker(speaker)}>
@@ -188,27 +200,27 @@ var Speakers = React.createClass({
 
 			var speakerUrl = '/dashboard/users/' + speaker.id;
 			return (
-				<li className="list-group-item Speaker" key={speaker.id}>
-					<div className="Speaker__image">
+				<li className="list-group-item User" key={speaker.id}>
+					<div className="User__image">
 						<img src="/dist/img/user1-128x128.jpg" 
 							width="60" height="60" 
 							alt={speaker.name} title={speaker.name} 
 							className="img-circle" />
 					</div>
 
-					<div className="Speaker__information">
-						<h5 className="Speaker__name">
+					<div className="User__information">
+						<h5 className="User__name">
 							<a href={speakerUrl}>
 								{speaker.name}
 							</a>
 						</h5>
-						<h6 className="Speaker__designation">
+						<h6 className="User__designation">
 							{speaker.designation} at {speaker.company}
 						</h6>
 					</div>
 
 					{ ! isSpeakingOnThisAgenda ?
-						<div className="Speaker__action">
+						<div className="User__action">
 							<button type="submit" 
 								className="btn btn-link"
 								onClick={() => this.addSpeaker(speaker)}>
@@ -222,8 +234,8 @@ var Speakers = React.createClass({
 		}.bind(this));
 
 		return (
-			<div>
-				<h3>People who will speak on this Agenda</h3>
+			<div className="Users">
+				<h3>Speakers ({agendaSpeakers.length})</h3>
 				<ul className="list-group">
          			{agendaSpeakers}
 				</ul>

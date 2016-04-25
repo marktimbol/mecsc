@@ -38937,7 +38937,7 @@ var Speakers = React.createClass({
 				},
 				suggestion: function suggestion(hit) {
 					var imagePath = '/dist/img/user1-128x128.jpg';
-					return '<div class="Suggestion">' + '<div class="Suggestion__figure">' + '<img src="' + imagePath + '" class="img-responsive" alt="" title="" />' + '</div>' + '<div class="Suggestion__content">' + '<h3 class="Suggestion__heading">' + hit._highlightResult.name.value + '</h3>' + '<address>' + '<p>' + hit.email + '</p>' + '<p>' + hit.designation + ' at ' + hit.company + '</p>' + '</address>' + '</div>' + '</div>';
+					return '<div class="Suggestion">' + '<div class="Suggestion__figure">' + '<img src="' + imagePath + '" class="img-responsive" alt="" title="" />' + '</div>' + '<div class="Suggestion__content">' + '<h3 class="Suggestion__heading">' + hit._highlightResult.name.value + '</h3>' + '<address>' + '<p>' + hit.designation + ' at ' + hit.company + '</p>' + '</address>' + '</div>' + '</div>';
 				}
 
 			}
@@ -38946,6 +38946,22 @@ var Speakers = React.createClass({
 				searchKey: suggestion.name
 			});
 		}.bind(this));
+	},
+	makeRequest: function makeRequest(type, url, data) {
+		$.ajax({
+			url: url,
+			type: type,
+			data: {
+				data: data
+			},
+			headers: {
+				'X-CSRF-Token': csrf_token
+			},
+			success: function success(response) {},
+			error: function error(xhr, status, err) {
+				console.log(err.toString());
+			}
+		});
 	},
 	handleChangeSearch: function handleChangeSearch(e) {
 		this.setState({ searchKey: e.target.value });
@@ -38973,18 +38989,7 @@ var Speakers = React.createClass({
 		this.refreshAvailableSpeakers();
 
 		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
-
-		$.ajax({
-			url: url,
-			type: 'POST',
-			headers: {
-				'X-CSRF-Token': csrf_token
-			},
-			success: function success(response) {},
-			error: function error(xhr, status, err) {
-				console.log(err.toString());
-			}
-		});
+		this.makeRequest('POST', url, []);
 	},
 	removeSpeaker: function removeSpeaker(selectedSpeaker) {
 		var speakerIndex = _.findIndex(this.state.agendaSpeakers, function (agendaSpeaker) {
@@ -39019,10 +39024,10 @@ var Speakers = React.createClass({
 
 			return React.createElement(
 				'li',
-				{ className: 'list-group-item Speaker', key: speaker.id },
+				{ className: 'list-group-item User', key: speaker.id },
 				React.createElement(
 					'div',
-					{ className: 'Speaker__image' },
+					{ className: 'User__image' },
 					React.createElement('img', { src: '/dist/img/user1-128x128.jpg',
 						width: '60', height: '60',
 						alt: speaker.name, title: speaker.name,
@@ -39030,10 +39035,10 @@ var Speakers = React.createClass({
 				),
 				React.createElement(
 					'div',
-					{ className: 'Speaker__information' },
+					{ className: 'User__information' },
 					React.createElement(
 						'h5',
-						{ className: 'Speaker__name' },
+						{ className: 'User__name' },
 						React.createElement(
 							'a',
 							{ href: '#' },
@@ -39042,7 +39047,7 @@ var Speakers = React.createClass({
 					),
 					React.createElement(
 						'h6',
-						{ className: 'Speaker__designation' },
+						{ className: 'User__designation' },
 						speaker.designation,
 						' at ',
 						speaker.company
@@ -39050,7 +39055,7 @@ var Speakers = React.createClass({
 				),
 				React.createElement(
 					'div',
-					{ className: 'Speaker__action' },
+					{ className: 'User__action' },
 					React.createElement(
 						'button',
 						{ type: 'submit',
@@ -39077,10 +39082,10 @@ var Speakers = React.createClass({
 			var speakerUrl = '/dashboard/users/' + speaker.id;
 			return React.createElement(
 				'li',
-				{ className: 'list-group-item Speaker', key: speaker.id },
+				{ className: 'list-group-item User', key: speaker.id },
 				React.createElement(
 					'div',
-					{ className: 'Speaker__image' },
+					{ className: 'User__image' },
 					React.createElement('img', { src: '/dist/img/user1-128x128.jpg',
 						width: '60', height: '60',
 						alt: speaker.name, title: speaker.name,
@@ -39088,10 +39093,10 @@ var Speakers = React.createClass({
 				),
 				React.createElement(
 					'div',
-					{ className: 'Speaker__information' },
+					{ className: 'User__information' },
 					React.createElement(
 						'h5',
-						{ className: 'Speaker__name' },
+						{ className: 'User__name' },
 						React.createElement(
 							'a',
 							{ href: speakerUrl },
@@ -39100,7 +39105,7 @@ var Speakers = React.createClass({
 					),
 					React.createElement(
 						'h6',
-						{ className: 'Speaker__designation' },
+						{ className: 'User__designation' },
 						speaker.designation,
 						' at ',
 						speaker.company
@@ -39108,7 +39113,7 @@ var Speakers = React.createClass({
 				),
 				!isSpeakingOnThisAgenda ? React.createElement(
 					'div',
-					{ className: 'Speaker__action' },
+					{ className: 'User__action' },
 					React.createElement(
 						'button',
 						{ type: 'submit',
@@ -39124,11 +39129,13 @@ var Speakers = React.createClass({
 
 		return React.createElement(
 			'div',
-			null,
+			{ className: 'Users' },
 			React.createElement(
 				'h3',
 				null,
-				'People who will speak on this Agenda'
+				'Speakers (',
+				agendaSpeakers.length,
+				')'
 			),
 			React.createElement(
 				'ul',

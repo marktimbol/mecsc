@@ -39,6 +39,7 @@
 @endsection
 
 @section('footer_scripts')
+	<script src="{{ elixir('js/typeahead.js') }}"></script>
     <script src="/js/CompanyRoles.js"></script>
     <script src="/js/CompanyContacts.js"></script>
 @endsection     

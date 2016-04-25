@@ -4,23 +4,23 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>Email</th>
 					<th>Designation</th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				@foreach( $speakers as $user )
+				@foreach( $speakers as $speaker )
 				<tr>
-					<td width="200"><a href="{{ route('dashboard.users.show', $user->id) }}">{{ $user->name }}</a></td>
-					<td>{{ $user->email }}</td>
-					<td>{{ sprintf('%s at %s', $user->designation, $user->company) }}</td>
+					<td width="200">
+						<a href="{{ route('dashboard.speakers.show', $speaker->id) }}">{{ $speaker->name }}</a>
+					</td>
+					<td>{{ sprintf('%s at %s', $speaker->designation, $speaker->company) }}</td>
 					<td class="right" width="100">
-						<form method="POST" action="{{ route('dashboard.users.destroy', $user->id) }}">
+						<form method="POST" action="{{ route('dashboard.speakers.destroy', $speaker->id) }}">
 							{!! csrf_field() !!}
 							{!! method_field('DELETE') !!}
-							<a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-primary">
+							<a href="{{ route('dashboard.speakers.edit', $speaker->id) }}" class="btn btn-primary">
 								<i class="fa fa-pencil"></i>
 							</a>
 							<button type="submit" class="btn btn-danger">&times;</button>

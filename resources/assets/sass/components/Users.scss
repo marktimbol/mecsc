@@ -1,0 +1,31 @@
+.Users {
+	.User {
+		display: flex;
+	}	
+}
+
+.User__image {
+	margin-right: 1em;
+}
+
+.User__information {
+	display: flex;
+	flex-direction: column;
+	flex: 0.8
+}
+
+.User__name {
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+
+.User__designation {
+	font-size: 14px;
+	margin: 5px 0px;
+}
+
+.User__action {
+	flex: 0.2;
+	align-self: center;
+	text-align: right;
+}

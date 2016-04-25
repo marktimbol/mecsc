@@ -16,7 +16,6 @@ class RoleTableSeeder extends Seeder
     		'Staff',
     		'Exhibitor',
     		'Sponsor',
-            'Speaker',
             'Administrator'
     	];	
 

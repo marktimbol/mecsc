@@ -9,6 +9,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected $baseUrl = 'http://localhost';
 
+    protected $user;
+    
     /**
      * Creates the application.
      *
@@ -21,5 +23,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    protected function signIn()
+    {
+        $this->user = factory(App\User::class)->create();
+        $this->actingAs($this->user);
     }
 }

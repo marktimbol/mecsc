@@ -11,19 +11,19 @@ use Illuminate\Support\Facades\Auth;
 use JavaScript;
 use Mecsc\Contracts\AgendaInterface;
 use Mecsc\Contracts\ScheduleInterface;
-use Mecsc\Contracts\UserInterface;
+use Mecsc\Contracts\SpeakerInterface;
 
 class AgendasController extends Controller
 {
     protected $schedule;
     protected $agenda;
-    protected $user;
+    protected $speaker;
 
-	public function __construct(ScheduleInterface $schedule, AgendaInterface $agenda, UserInterface $user)
+	public function __construct(ScheduleInterface $schedule, AgendaInterface $agenda, SpeakerInterface $speaker)
 	{
         $this->schedule = $schedule;
         $this->agenda = $agenda;
-        $this->user = $user;
+        $this->speaker = $speaker;
 	}
 
     public function index()
@@ -51,14 +51,10 @@ class AgendasController extends Controller
         $schedules = $this->schedule->all();
 
         $existingSpeakers = $agenda->speakers->lists('id');
-        $availableSpeakers = $this->user->onlySpeakers()    
-                            ->except($existingSpeakers)
-                            ->get();
 
         JavaScript::put([
             'signedIn'  => Auth::check(),
-            'agenda'    => $agenda,
-            'speakers'  => $availableSpeakers
+            'agenda'    => $agenda
         ]);
 
         return view('dashboard.agendas.show', compact('agenda', 'schedules', 'speakers'));

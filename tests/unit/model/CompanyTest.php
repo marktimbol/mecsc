@@ -8,11 +8,14 @@ class CompanyTest extends TestCase
 {
 	use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->signIn();
+    }
+
     public function test_it_shows_all_the_companies()
     {
-    	$user = factory(App\User::class)->create();
-    	$this->actingAs($user);
-
     	$company = factory(App\Company::class)->create();
 
     	$this->visit('/dashboard/companies')
@@ -21,9 +24,6 @@ class CompanyTest extends TestCase
 
     public function test_it_show_individual_company()
     {
-        $user = factory(App\User::class)->create();
-        $this->actingAs($user);
-
         $company = factory(App\Company::class)->create();
 
         $this->visit('/dashboard/companies/'.$company->id)
@@ -32,9 +32,6 @@ class CompanyTest extends TestCase
 
     public function test_it_stores_a_company_from_an_input_data()
     {
-    	$user = factory(App\User::class)->create();
-    	$this->actingAs($user);
-
     	$this->visit('/dashboard/companies')
     		->type('Company Name', 'name')
     		->type('1234', 'standNumber')
@@ -50,9 +47,6 @@ class CompanyTest extends TestCase
 
     public function test_it_validates_input_when_creating_company()
     {
-    	$user = factory(App\User::class)->create();
-    	$this->actingAs($user);
-
     	$this->visit('/dashboard/companies')
     		->type('1234', 'standNumber')
     		->type('The Description', 'description')
@@ -63,9 +57,6 @@ class CompanyTest extends TestCase
 
     public function test_it_shows_an_edit_form_when_editing_company_information()
     {
-    	$user = factory(App\User::class)->create();
-    	$this->actingAs($user);
-
     	$company = factory(App\Company::class)->create();
 
     	$this->visit('/dashboard/companies/'.$company->id.'/edit')
@@ -75,9 +66,6 @@ class CompanyTest extends TestCase
 
     public function test_it_updates_a_company_from_an_input_data()
     {
-        $user = factory(App\User::class)->create();
-        $this->actingAs($user);
-
         $company = factory(App\Company::class)->create();
 
         $this->visit('/dashboard/companies/'.$company->id.'/edit')
@@ -97,9 +85,6 @@ class CompanyTest extends TestCase
 
     public function test_it_deletes_a_selected_company()
     {
-    	$user = factory(App\User::class)->create();
-    	$this->actingAs($user);
-
     	$company = factory(App\Company::class)->create();
 
     	$this->call('DELETE', '/dashboard/companies/'.$company->id);

@@ -8,11 +8,14 @@ class AgendaTest extends TestCase
 {
 	use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->signIn();
+    }
+
 	public function test_it_stores_user_input()
 	{
-		$user = factory(App\User::class)->create([]);
-		$this->actingAs($user);
-
 		$schedule = factory(App\Schedule::class)->create(['description' => '']);
 		$category = factory(App\Category::class)->create();
 
@@ -38,9 +41,6 @@ class AgendaTest extends TestCase
 
 	public function test_do_not_store_inputs_if_the_required_inputs_are_empty()
 	{
-		$user = factory(App\User::class)->create([]);
-		$this->actingAs($user);
-
 		$this->visit('/dashboard/agendas')
 			->select(1, 'category_id')
 			->type('Venue', 'venue')
@@ -53,9 +53,6 @@ class AgendaTest extends TestCase
 
 	public function test_show_all_agendas()
 	{
-		$user = factory(App\User::class)->create([]);
-		$this->actingAs($user);
-
 		$schedule = factory(App\Schedule::class)->create(['description' => '']);
 		$agenda = factory(App\Agenda::class)->make();
 
@@ -67,9 +64,6 @@ class AgendaTest extends TestCase
 
 	public function test_it_shows_specific_agenda()
 	{
-		$user = factory(App\User::class)->create([]);
-		$this->actingAs($user);
-
 		$schedule = factory(App\Schedule::class)->create(['description' => '']);
 		$agenda = factory(App\Agenda::class)->make();
 
@@ -81,9 +75,6 @@ class AgendaTest extends TestCase
 
 	public function test_it_deletes_agenda_by_id()
 	{
-		$user = factory(App\User::class)->create([]);
-		$this->actingAs($user);
-
 		$agenda = factory(App\Agenda::class)->create([]);
 
 		$response = $this->call('DELETE', 'dashboard/agendas/'.$agenda->id, []);

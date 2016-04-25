@@ -6,27 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    use AddRemoveRoles;
+    use AddRemoveContacts;
+
     protected $fillable = ['name', 'standNumber', 'description'];
 
-    protected $with = ['roles'];
+    protected $with = ['roles', 'contacts'];
 
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'company_roles');
     }
 
-    // public function contacts()
-    // {
-    //     return $this->belongsToMany(User::class, 'company_contacts');
-    // }
-
-    public function addRole($role_id)
+    public function contacts()
     {
-        return $this->roles()->attach($role_id);
-    }
-
-    public function removeRole($role_id)
-    {
-        return $this->roles()->detach($role_id);
+        return $this->belongsToMany(User::class, 'company_contacts', 'company_id', 'contact_id');
     }
 }

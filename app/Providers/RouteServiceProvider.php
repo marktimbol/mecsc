@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Agenda;
 use App\Company;
 use App\Role;
+use App\Speaker;
 use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
@@ -31,9 +32,10 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot($router);
 
         $router->model('users', User::class);
+        $router->model('contacts', User::class);
         $router->model('roles', Role::class);
         $router->model('agendas', Agenda::class);
-        $router->model('speaker', User::class);
+        $router->model('speakers', Speaker::class);
         $router->model('companies', Company::class);
     }
 

@@ -9,7 +9,7 @@
         <h3>Description</h3>
         {!! $agenda->description !!}
 
-        <div id="Speakers" class="Speakers"></div>
+        <div id="Speakers"></div>
 
     </div>
 </div>
