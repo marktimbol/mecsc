@@ -17,11 +17,9 @@ class AgendaTest extends TestCase
 	public function test_it_stores_user_input()
 	{
 		$schedule = factory(App\Schedule::class)->create(['description' => '']);
-		$category = factory(App\Category::class)->create();
 
 		$this->visit('/dashboard/agendas')
 			->select($schedule->id, 'schedule_id')
-			->select($category->id, 'category_id')
 			->type('8:00am - 9:00am', 'time')
 			->type('Venue', 'venue')
 			->type('Title', 'title')
@@ -32,17 +30,12 @@ class AgendaTest extends TestCase
 				'venue'			=> 'Venue',
 				'title'			=> 'Title',
 				'description'	=> 'The description'
-			])
-			->seeInDatabase('agenda_categories', [
-				'agenda_id'	=> 1,
-				'category_id'	=> 1
 			]);
 	}
 
 	public function test_do_not_store_inputs_if_the_required_inputs_are_empty()
 	{
 		$this->visit('/dashboard/agendas')
-			->select(1, 'category_id')
 			->type('Venue', 'venue')
 			->type('8:00am - 9:00am', 'time')
 			->type('The description', 'description')

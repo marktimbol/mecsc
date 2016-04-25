@@ -37,9 +37,8 @@ class CompanyRoleTest extends TestCase
 		$role = factory(App\Role::class)->create([
 			'title'	=> 'Exhibitor'
 		]);
-		
-		$company->roles()->attach($role->id);
-
+		$company->addRole($role->id);
+	
 		$this->call('DELETE', '/dashboard/companies/'.$company->id.'/roles/'.$role->id);
 		
 		$this->dontSeeInDatabase('company_roles', [

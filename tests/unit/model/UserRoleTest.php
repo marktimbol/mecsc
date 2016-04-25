@@ -35,7 +35,7 @@ class UserRoleTest extends TestCase
 		$role = factory(App\Role::class)->create([
 			'title'	=> 'Exhibitor'
 		]);
-		$userRole = $this->user->roles()->attach($role->id);
+		$userRole = $this->user->addRole($role->id);
 
 		$this->call('DELETE', '/dashboard/users/'.$this->user->id.'/roles/'.$role->id);
 		

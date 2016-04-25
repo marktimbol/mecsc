@@ -17,8 +17,8 @@ class ScheduleRepository implements ScheduleInterface {
 		return Schedule::create($data->all()) ? true : false;
 	}
 
-	public function delete($id)
+	public function delete($schedule)
 	{
-		return Schedule::findOrFail($id)->delete();
+		return $schedule->delete();
 	}
 }

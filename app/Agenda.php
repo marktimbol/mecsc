@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
+	use AddRemoveSpeaker;
+	
 	protected $fillable = [
 		'time', 'venue', 'title', 'description'
 	];
@@ -15,11 +17,6 @@ class Agenda extends Model
 	public function schedule()
 	{
 		return $this->belongsTo(Schedule::class);
-	}
-	
-	public function categories()
-	{
-		return $this->belongsToMany(Category::class, 'agenda_categories');
 	}
 
 	public function speakers()

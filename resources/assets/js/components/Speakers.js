@@ -8,6 +8,9 @@ var csrf_token = $('meta[name="csrf_token"]').attr('content');
 
 var index;
 
+import UserInfo from './UserInfo';
+import SearchUser from './SearchUser';
+
 var Speakers = React.createClass({
 	getInitialState()
 	{
@@ -24,7 +27,6 @@ var Speakers = React.createClass({
 		index = client.initIndex('mecsc_speakers');
 
 		this.enableTypeahead();
-
 		this.refreshAvailableSpeakers();
 	},
 
@@ -79,9 +81,7 @@ var Speakers = React.createClass({
 		$.ajax({
 			url: url,
 			type: type,
-			data: {
-				data,
-			},
+			data: data,
 			headers: {
 				'X-CSRF-Token': csrf_token,
 			},
@@ -124,8 +124,8 @@ var Speakers = React.createClass({
 
 		this.refreshAvailableSpeakers();
 
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
-		this.makeRequest('POST', url, []);
+		var url = '/dashboard/agendas/' + window.agenda.id + '/speakers';
+		this.makeRequest('POST', url, { 'speaker_id': selectedSpeaker.id});
 	},
 
 	removeSpeaker(selectedSpeaker)
@@ -140,52 +140,22 @@ var Speakers = React.createClass({
 
 		this.refreshAvailableSpeakers();
 
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
-
-		$.ajax({
-			url: url,
-			type: 'DELETE',
-			headers: {
-				'X-CSRF-Token': csrf_token,
-			},
-			success: function(response) {},
-			error: function(xhr, status, err) {
-				console.log(err.toString());
-			}
-		});
+		var url = '/dashboard/agendas/' + window.agenda.id + '/speakers/' + selectedSpeaker.id;
+		this.makeRequest('DELETE', url, []);
 	},
 
 	render()
 	{
 		var agendaSpeakers = this.state.agendaSpeakers.map(function(speaker) {
+			var url = '/dashboard/speakers/'+speaker.id;
 			return (
-				<li className="list-group-item User" key={speaker.id}>
-					<div className="User__image">
-						<img src="/dist/img/user1-128x128.jpg" 
-							width="60" height="60" 
-							alt={speaker.name} title={speaker.name} 
-							className="img-circle" />
-					</div>
-
-					<div className="User__information">
-						<h5 className="User__name">
-							<a href="#">
-								{speaker.name}
-							</a>
-						</h5>
-						<h6 className="User__designation">
-							{speaker.designation} at {speaker.company}
-						</h6>
-					</div>
-
-					<div className="User__action">
-						<button type="submit" 
-							className="btn btn-link"
-							onClick={() => this.removeSpeaker(speaker)}>
-								<i className="fa fa-minus"></i>
-						</button>
-					</div>
-				</li>   
+				<UserInfo 
+					key={speaker.id} 
+					user={speaker} 
+					url={url}
+					action={'remove'}
+					showAddButton={false}
+					onDelete={this.removeSpeaker} />
 			);
 		}.bind(this));		
 
@@ -198,38 +168,14 @@ var Speakers = React.createClass({
 				}
 			});
 
-			var speakerUrl = '/dashboard/users/' + speaker.id;
+			var url = '/dashboard/users/' + speaker.id;
 			return (
-				<li className="list-group-item User" key={speaker.id}>
-					<div className="User__image">
-						<img src="/dist/img/user1-128x128.jpg" 
-							width="60" height="60" 
-							alt={speaker.name} title={speaker.name} 
-							className="img-circle" />
-					</div>
-
-					<div className="User__information">
-						<h5 className="User__name">
-							<a href={speakerUrl}>
-								{speaker.name}
-							</a>
-						</h5>
-						<h6 className="User__designation">
-							{speaker.designation} at {speaker.company}
-						</h6>
-					</div>
-
-					{ ! isSpeakingOnThisAgenda ?
-						<div className="User__action">
-							<button type="submit" 
-								className="btn btn-link"
-								onClick={() => this.addSpeaker(speaker)}>
-									<i className="fa fa-plus"></i>
-							</button>
-						</div>
-						: ''
-					}
-				</li>   
+				<UserInfo 
+					key={speaker.id} 
+					user={speaker} 
+					url={url}
+					showAddButton={ ! isSpeakingOnThisAgenda }
+					onSave={this.addSpeaker} />
 			);
 		}.bind(this));
 
@@ -241,21 +187,11 @@ var Speakers = React.createClass({
 				</ul>
 
 				<h3>Available Speakers</h3>
-				<form onSubmit={() => this.searchSpeaker}>
-					<div className="form-group">
-						<input 
-							type="text" 
-							placeholder="Find Speakers"
-							className="form-control typeahead"
-							value={this.state.searchKey}
-							onChange={this.handleChangeSearch}/>
-					</div>
-					<div className="form-group">
-						<button className="btn btn-default" onClick={this.searchSpeaker}>
-							<i className="fa fa-search"></i> Search
-						</button>
-					</div>
-				</form>
+				<SearchUser 
+					onSubmit={this.searchSpeaker}
+					value={this.state.searchKey}
+					placeholder={'Search Speakers'}
+					onChange={this.handleChangeSearch} />
 
 				<ul className="list-group">
          			{availableSpeakers}

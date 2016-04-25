@@ -28,16 +28,11 @@ class AgendaRepository implements AgendaInterface {
 		$agenda->venue = $data->venue;
 		$agenda->description = $data->description;
 
-		if( $schedule->agendas()->save($agenda) )
-		{
-			$agenda->categories()->attach($data->category_id);
-			return true;
-		}
-		return false;
+		return $schedule->agendas()->save($agenda) ? true : false;
 	}
 
-	public function delete($id)
+	public function delete($agenda)
 	{
-		return Agenda::findOrFail($id)->delete();
+		return $agenda->delete();
 	}
 }

@@ -22,7 +22,9 @@ Route::group([ 'middleware' => ['web', 'auth'], 'prefix' => 'dashboard'], functi
 	/**
 	 * Users
 	 */
-	Route::resource('users.roles', 'Dashboard\UserRolesController', ['only' => ['store', 'destroy']]);
+	Route::resource('users.roles', 'Dashboard\UserRolesController', [
+		'only' => ['store', 'destroy']
+	]);
 	Route::resource('users', 'Dashboard\UsersController');
 
 	/**
@@ -38,14 +40,8 @@ Route::group([ 'middleware' => ['web', 'auth'], 'prefix' => 'dashboard'], functi
 	/**
 	 * Agendas
 	 */
-	Route::post('agendas/{agendas}/speaker/{speakers}', [
-		'as' => 'speaker.add', 
-		'uses' => 'Dashboard\AgendasController@addSpeaker'
-	]);
-
-	Route::delete('agendas/{agendas}/speaker/{speakers}', [
-		'as' => 'speaker.remove', 
-		'uses' => 'Dashboard\AgendasController@removeSpeaker'
+	Route::resource('agendas.speakers', 'Dashboard\AgendaSpeakersController', [
+		'only' => ['store', 'destroy']
 	]);
 
 	Route::resource('agendas', 'Dashboard\AgendasController', [
@@ -55,8 +51,12 @@ Route::group([ 'middleware' => ['web', 'auth'], 'prefix' => 'dashboard'], functi
 	/**
 	 * Companies
 	 */
-	Route::resource('companies.contacts', 'Dashboard\CompanyContactsController', ['only' => ['store', 'destroy']]);
-	Route::resource('companies.roles', 'Dashboard\CompanyRolesController', ['only' => ['store', 'destroy']]);
+	Route::resource('companies.contacts', 'Dashboard\CompanyContactsController', [
+		'only' => ['store', 'destroy']
+	]);
+	Route::resource('companies.roles', 'Dashboard\CompanyRolesController', [
+		'only' => ['store', 'destroy']
+	]);
 	Route::resource('companies', 'Dashboard\CompaniesController');
 });
 

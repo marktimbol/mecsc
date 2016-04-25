@@ -38893,7 +38893,66 @@ module.exports = validateDOMNesting;
 module.exports = require('./lib/React');
 
 },{"./lib/React":144}],251:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SearchUser = _react2.default.createClass({
+	displayName: "SearchUser",
+	render: function render() {
+		var _this = this;
+
+		return _react2.default.createElement(
+			"form",
+			{ onSubmit: function onSubmit() {
+					return _this.props.onSubmit;
+				} },
+			_react2.default.createElement(
+				"div",
+				{ className: "form-group" },
+				_react2.default.createElement("input", {
+					type: "text",
+					placeholder: this.props.placeholder,
+					className: "form-control typeahead",
+					value: this.props.value,
+					onChange: this.props.onChange })
+			),
+			_react2.default.createElement(
+				"div",
+				{ className: "form-group" },
+				_react2.default.createElement(
+					"button",
+					{ className: "btn btn-default", onClick: this.props.onSubmit },
+					_react2.default.createElement("i", { className: "fa fa-search" }),
+					" Search"
+				)
+			)
+		);
+	}
+});
+
+exports.default = SearchUser;
+
+},{"react":250}],252:[function(require,module,exports){
 'use strict';
+
+var _UserInfo = require('./UserInfo');
+
+var _UserInfo2 = _interopRequireDefault(_UserInfo);
+
+var _SearchUser = require('./SearchUser');
+
+var _SearchUser2 = _interopRequireDefault(_SearchUser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -38919,7 +38978,6 @@ var Speakers = React.createClass({
 		index = client.initIndex('mecsc_speakers');
 
 		this.enableTypeahead();
-
 		this.refreshAvailableSpeakers();
 	},
 	enableTypeahead: function enableTypeahead() {
@@ -38951,9 +39009,7 @@ var Speakers = React.createClass({
 		$.ajax({
 			url: url,
 			type: type,
-			data: {
-				data: data
-			},
+			data: data,
 			headers: {
 				'X-CSRF-Token': csrf_token
 			},
@@ -38988,8 +39044,8 @@ var Speakers = React.createClass({
 
 		this.refreshAvailableSpeakers();
 
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
-		this.makeRequest('POST', url, []);
+		var url = '/dashboard/agendas/' + window.agenda.id + '/speakers';
+		this.makeRequest('POST', url, { 'speaker_id': selectedSpeaker.id });
 	},
 	removeSpeaker: function removeSpeaker(selectedSpeaker) {
 		var speakerIndex = _.findIndex(this.state.agendaSpeakers, function (agendaSpeaker) {
@@ -39002,76 +39058,22 @@ var Speakers = React.createClass({
 
 		this.refreshAvailableSpeakers();
 
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speaker/' + selectedSpeaker.id;
-
-		$.ajax({
-			url: url,
-			type: 'DELETE',
-			headers: {
-				'X-CSRF-Token': csrf_token
-			},
-			success: function success(response) {},
-			error: function error(xhr, status, err) {
-				console.log(err.toString());
-			}
-		});
+		var url = '/dashboard/agendas/' + window.agenda.id + '/speakers/' + selectedSpeaker.id;
+		this.makeRequest('DELETE', url, []);
 	},
 	render: function render() {
-		var _this3 = this;
-
 		var agendaSpeakers = this.state.agendaSpeakers.map(function (speaker) {
-			var _this = this;
-
-			return React.createElement(
-				'li',
-				{ className: 'list-group-item User', key: speaker.id },
-				React.createElement(
-					'div',
-					{ className: 'User__image' },
-					React.createElement('img', { src: '/dist/img/user1-128x128.jpg',
-						width: '60', height: '60',
-						alt: speaker.name, title: speaker.name,
-						className: 'img-circle' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'User__information' },
-					React.createElement(
-						'h5',
-						{ className: 'User__name' },
-						React.createElement(
-							'a',
-							{ href: '#' },
-							speaker.name
-						)
-					),
-					React.createElement(
-						'h6',
-						{ className: 'User__designation' },
-						speaker.designation,
-						' at ',
-						speaker.company
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'User__action' },
-					React.createElement(
-						'button',
-						{ type: 'submit',
-							className: 'btn btn-link',
-							onClick: function onClick() {
-								return _this.removeSpeaker(speaker);
-							} },
-						React.createElement('i', { className: 'fa fa-minus' })
-					)
-				)
-			);
+			var url = '/dashboard/speakers/' + speaker.id;
+			return React.createElement(_UserInfo2.default, {
+				key: speaker.id,
+				user: speaker,
+				url: url,
+				action: 'remove',
+				showAddButton: false,
+				onDelete: this.removeSpeaker });
 		}.bind(this));
 
 		var availableSpeakers = this.state.availableSpeakers.map(function (speaker) {
-			var _this2 = this;
-
 			var isSpeakingOnThisAgenda = false;
 			this.state.agendaSpeakers.map(function (agendaSpeakers) {
 				if (agendaSpeakers.id === speaker.id) {
@@ -39079,52 +39081,13 @@ var Speakers = React.createClass({
 				}
 			});
 
-			var speakerUrl = '/dashboard/users/' + speaker.id;
-			return React.createElement(
-				'li',
-				{ className: 'list-group-item User', key: speaker.id },
-				React.createElement(
-					'div',
-					{ className: 'User__image' },
-					React.createElement('img', { src: '/dist/img/user1-128x128.jpg',
-						width: '60', height: '60',
-						alt: speaker.name, title: speaker.name,
-						className: 'img-circle' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'User__information' },
-					React.createElement(
-						'h5',
-						{ className: 'User__name' },
-						React.createElement(
-							'a',
-							{ href: speakerUrl },
-							speaker.name
-						)
-					),
-					React.createElement(
-						'h6',
-						{ className: 'User__designation' },
-						speaker.designation,
-						' at ',
-						speaker.company
-					)
-				),
-				!isSpeakingOnThisAgenda ? React.createElement(
-					'div',
-					{ className: 'User__action' },
-					React.createElement(
-						'button',
-						{ type: 'submit',
-							className: 'btn btn-link',
-							onClick: function onClick() {
-								return _this2.addSpeaker(speaker);
-							} },
-						React.createElement('i', { className: 'fa fa-plus' })
-					)
-				) : ''
-			);
+			var url = '/dashboard/users/' + speaker.id;
+			return React.createElement(_UserInfo2.default, {
+				key: speaker.id,
+				user: speaker,
+				url: url,
+				showAddButton: !isSpeakingOnThisAgenda,
+				onSave: this.addSpeaker });
 		}.bind(this));
 
 		return React.createElement(
@@ -39147,32 +39110,11 @@ var Speakers = React.createClass({
 				null,
 				'Available Speakers'
 			),
-			React.createElement(
-				'form',
-				{ onSubmit: function onSubmit() {
-						return _this3.searchSpeaker;
-					} },
-				React.createElement(
-					'div',
-					{ className: 'form-group' },
-					React.createElement('input', {
-						type: 'text',
-						placeholder: 'Find Speakers',
-						className: 'form-control typeahead',
-						value: this.state.searchKey,
-						onChange: this.handleChangeSearch })
-				),
-				React.createElement(
-					'div',
-					{ className: 'form-group' },
-					React.createElement(
-						'button',
-						{ className: 'btn btn-default', onClick: this.searchSpeaker },
-						React.createElement('i', { className: 'fa fa-search' }),
-						' Search'
-					)
-				)
-			),
+			React.createElement(_SearchUser2.default, {
+				onSubmit: this.searchSpeaker,
+				value: this.state.searchKey,
+				placeholder: 'Search Speakers',
+				onChange: this.handleChangeSearch }),
 			React.createElement(
 				'ul',
 				{ className: 'list-group' },
@@ -39184,6 +39126,89 @@ var Speakers = React.createClass({
 
 ReactDOM.render(React.createElement(Speakers, null), document.getElementById('Speakers'));
 
-},{"algoliasearch":5,"lodash":48,"react":250,"react-addons-update":119,"react-dom":120}]},{},[251]);
+},{"./SearchUser":251,"./UserInfo":253,"algoliasearch":5,"lodash":48,"react":250,"react-addons-update":119,"react-dom":120}],253:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UserInfo = _react2.default.createClass({
+	displayName: 'UserInfo',
+	getDefaultProps: function getDefaultProps() {
+		return {
+			showAddButton: true,
+			action: 'add'
+		};
+	},
+	render: function render() {
+		var _this = this;
+
+		return _react2.default.createElement(
+			'li',
+			{ className: 'list-group-item User UserInfo' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'User__image' },
+				_react2.default.createElement('img', { src: '/dist/img/user1-128x128.jpg',
+					width: '60', height: '60',
+					alt: this.props.user.name, title: this.props.user.name,
+					className: 'img-circle' })
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'User__information' },
+				_react2.default.createElement(
+					'h5',
+					{ className: 'User__name' },
+					_react2.default.createElement(
+						'a',
+						{ href: this.props.url },
+						this.props.user.name
+					)
+				),
+				_react2.default.createElement(
+					'h6',
+					{ className: 'User__designation' },
+					this.props.user.designation,
+					' at ',
+					this.props.user.company
+				)
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'User__action' },
+				this.props.showAddButton ? _react2.default.createElement(
+					'button',
+					{ type: 'submit',
+						className: 'btn btn-link',
+						onClick: function onClick() {
+							return _this.props.onSave(_this.props.user);
+						} },
+					_react2.default.createElement('i', { className: 'fa fa-plus' })
+				) : '',
+				this.props.action == 'remove' ? _react2.default.createElement(
+					'button',
+					{ type: 'submit',
+						className: 'btn btn-link',
+						onClick: function onClick() {
+							return _this.props.onDelete(_this.props.user);
+						} },
+					_react2.default.createElement('i', { className: 'fa fa-minus' })
+				) : ''
+			)
+		);
+	}
+});
+
+exports.default = UserInfo;
+
+},{"react":250}]},{},[252]);
 
 //# sourceMappingURL=Speakers.js.map

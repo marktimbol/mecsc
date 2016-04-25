@@ -38895,6 +38895,16 @@ module.exports = require('./lib/React');
 },{"./lib/React":144}],251:[function(require,module,exports){
 'use strict';
 
+var _UserInfo = require('./UserInfo');
+
+var _UserInfo2 = _interopRequireDefault(_UserInfo);
+
+var _SearchUser = require('./SearchUser');
+
+var _SearchUser2 = _interopRequireDefault(_SearchUser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var update = require('react-addons-update');
@@ -38950,9 +38960,7 @@ var CompanyContacts = React.createClass({
 		$.ajax({
 			url: url,
 			type: type,
-			data: {
-				data: data
-			},
+			data: data,
 			headers: {
 				'X-CSRF-Token': csrf_token
 			},
@@ -38988,11 +38996,7 @@ var CompanyContacts = React.createClass({
 		this.refreshAvailableContacts();
 
 		var url = '/dashboard/companies/' + window.company.id + '/contacts';
-		var data = {
-			'contact_id': selectedContact.id
-		};
-
-		this.makeRequest('POST', url, data);
+		this.makeRequest('POST', url, { 'contact_id': selectedContact.id });
 	},
 	removeContact: function removeContact(selectedContact) {
 		var contactIndex = _.findIndex(this.state.companyContacts, function (companyContact) {
@@ -39009,61 +39013,18 @@ var CompanyContacts = React.createClass({
 		this.makeRequest('DELETE', url, []);
 	},
 	render: function render() {
-		var _this3 = this;
-
 		var companyContacts = this.state.companyContacts.map(function (companyContact) {
-			var _this = this;
-
-			return React.createElement(
-				'li',
-				{ className: 'list-group-item User', key: companyContact.id },
-				React.createElement(
-					'div',
-					{ className: 'User__image' },
-					React.createElement('img', { src: '/dist/img/user1-128x128.jpg',
-						width: '60', height: '60',
-						alt: companyContact.name, title: companyContact.name,
-						className: 'img-circle' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'User__information' },
-					React.createElement(
-						'h5',
-						{ className: 'User__name' },
-						React.createElement(
-							'a',
-							{ href: '#' },
-							companyContact.name
-						)
-					),
-					React.createElement(
-						'h6',
-						{ className: 'User__designation' },
-						companyContact.designation,
-						' at ',
-						companyContact.company
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'User__action' },
-					React.createElement(
-						'button',
-						{ type: 'submit',
-							className: 'btn btn-link',
-							onClick: function onClick() {
-								return _this.removeContact(companyContact);
-							} },
-						React.createElement('i', { className: 'fa fa-minus' })
-					)
-				)
-			);
+			var url = '/dashboard/users/' + companyContact.id;
+			return React.createElement(_UserInfo2.default, {
+				key: companyContact.id,
+				user: companyContact,
+				url: url,
+				action: 'remove',
+				showAddButton: false,
+				onDelete: this.removeContact });
 		}.bind(this));
 
 		var availableContacts = this.state.availableContacts.map(function (availableContact) {
-			var _this2 = this;
-
 			var isPartOfThisCompany = false;
 			this.state.companyContacts.map(function (companyContact) {
 				if (companyContact.id === availableContact.id) {
@@ -39071,52 +39032,13 @@ var CompanyContacts = React.createClass({
 				}
 			});
 
-			var userUrl = '/dashboard/users/' + availableContact.id;
-			return React.createElement(
-				'li',
-				{ className: 'list-group-item User', key: availableContact.id },
-				React.createElement(
-					'div',
-					{ className: 'User__image' },
-					React.createElement('img', { src: '/dist/img/user1-128x128.jpg',
-						width: '60', height: '60',
-						alt: availableContact.name, title: availableContact.name,
-						className: 'img-circle' })
-				),
-				React.createElement(
-					'div',
-					{ className: 'User__information' },
-					React.createElement(
-						'h5',
-						{ className: 'User__name' },
-						React.createElement(
-							'a',
-							{ href: userUrl },
-							availableContact.name
-						)
-					),
-					React.createElement(
-						'h6',
-						{ className: 'User__designation' },
-						availableContact.designation,
-						' at ',
-						availableContact.company
-					)
-				),
-				!isPartOfThisCompany ? React.createElement(
-					'div',
-					{ className: 'User__action' },
-					React.createElement(
-						'button',
-						{ type: 'submit',
-							className: 'btn btn-link',
-							onClick: function onClick() {
-								return _this2.addContact(availableContact);
-							} },
-						React.createElement('i', { className: 'fa fa-plus' })
-					)
-				) : ''
-			);
+			var url = '/dashboard/users/' + availableContact.id;
+			return React.createElement(_UserInfo2.default, {
+				key: availableContact.id,
+				user: availableContact,
+				url: url,
+				showAddButton: !isPartOfThisCompany,
+				onSave: this.addContact });
 		}.bind(this));
 
 		return React.createElement(
@@ -39139,32 +39061,11 @@ var CompanyContacts = React.createClass({
 				null,
 				'Available Contacts'
 			),
-			React.createElement(
-				'form',
-				{ onSubmit: function onSubmit() {
-						return _this3.searchContact;
-					} },
-				React.createElement(
-					'div',
-					{ className: 'form-group' },
-					React.createElement('input', {
-						type: 'text',
-						placeholder: 'Find Contact',
-						className: 'form-control typeahead',
-						value: this.state.searchKey,
-						onChange: this.handleChangeSearch })
-				),
-				React.createElement(
-					'div',
-					{ className: 'form-group' },
-					React.createElement(
-						'button',
-						{ className: 'btn btn-default', onClick: this.searchContact },
-						React.createElement('i', { className: 'fa fa-search' }),
-						' Search'
-					)
-				)
-			),
+			React.createElement(_SearchUser2.default, {
+				onSubmit: this.searchContact,
+				value: this.state.searchKey,
+				placeholder: 'Search Contacts',
+				onChange: this.handleChangeSearch }),
 			React.createElement(
 				'ul',
 				{ className: 'list-group' },
@@ -39176,6 +39077,138 @@ var CompanyContacts = React.createClass({
 
 ReactDOM.render(React.createElement(CompanyContacts, null), document.getElementById('CompanyContacts'));
 
-},{"algoliasearch":5,"lodash":48,"react":250,"react-addons-update":119,"react-dom":120}]},{},[251]);
+},{"./SearchUser":252,"./UserInfo":253,"algoliasearch":5,"lodash":48,"react":250,"react-addons-update":119,"react-dom":120}],252:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SearchUser = _react2.default.createClass({
+	displayName: "SearchUser",
+	render: function render() {
+		var _this = this;
+
+		return _react2.default.createElement(
+			"form",
+			{ onSubmit: function onSubmit() {
+					return _this.props.onSubmit;
+				} },
+			_react2.default.createElement(
+				"div",
+				{ className: "form-group" },
+				_react2.default.createElement("input", {
+					type: "text",
+					placeholder: this.props.placeholder,
+					className: "form-control typeahead",
+					value: this.props.value,
+					onChange: this.props.onChange })
+			),
+			_react2.default.createElement(
+				"div",
+				{ className: "form-group" },
+				_react2.default.createElement(
+					"button",
+					{ className: "btn btn-default", onClick: this.props.onSubmit },
+					_react2.default.createElement("i", { className: "fa fa-search" }),
+					" Search"
+				)
+			)
+		);
+	}
+});
+
+exports.default = SearchUser;
+
+},{"react":250}],253:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UserInfo = _react2.default.createClass({
+	displayName: 'UserInfo',
+	getDefaultProps: function getDefaultProps() {
+		return {
+			showAddButton: true,
+			action: 'add'
+		};
+	},
+	render: function render() {
+		var _this = this;
+
+		return _react2.default.createElement(
+			'li',
+			{ className: 'list-group-item User UserInfo' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'User__image' },
+				_react2.default.createElement('img', { src: '/dist/img/user1-128x128.jpg',
+					width: '60', height: '60',
+					alt: this.props.user.name, title: this.props.user.name,
+					className: 'img-circle' })
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'User__information' },
+				_react2.default.createElement(
+					'h5',
+					{ className: 'User__name' },
+					_react2.default.createElement(
+						'a',
+						{ href: this.props.url },
+						this.props.user.name
+					)
+				),
+				_react2.default.createElement(
+					'h6',
+					{ className: 'User__designation' },
+					this.props.user.designation,
+					' at ',
+					this.props.user.company
+				)
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'User__action' },
+				this.props.showAddButton ? _react2.default.createElement(
+					'button',
+					{ type: 'submit',
+						className: 'btn btn-link',
+						onClick: function onClick() {
+							return _this.props.onSave(_this.props.user);
+						} },
+					_react2.default.createElement('i', { className: 'fa fa-plus' })
+				) : '',
+				this.props.action == 'remove' ? _react2.default.createElement(
+					'button',
+					{ type: 'submit',
+						className: 'btn btn-link',
+						onClick: function onClick() {
+							return _this.props.onDelete(_this.props.user);
+						} },
+					_react2.default.createElement('i', { className: 'fa fa-minus' })
+				) : ''
+			)
+		);
+	}
+});
+
+exports.default = UserInfo;
+
+},{"react":250}]},{},[251]);
 
 //# sourceMappingURL=CompanyContacts.js.map

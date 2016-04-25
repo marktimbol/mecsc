@@ -31,8 +31,8 @@ class CompanyContactsTest extends TestCase
     {
     	$company = factory(App\Company::class)->create();
     	$contact = factory(App\User::class)->create();
+        $company->addContact($contact->id);
 
-    	$company->contacts()->attach($contact->id);
     	$this->seeInDatabase('company_contacts', [
     		'company_id'	=> $company->id,
     		'contact_id'	=> $contact->id,

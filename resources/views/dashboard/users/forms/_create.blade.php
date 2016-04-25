@@ -34,7 +34,7 @@
 					</div>
 
 					<div class="form-group">
-						<button type="submit" name="submit" class="btn btn-primary">Create User</button>
+						<button type="submit" class="btn btn-primary">Create User</button>
 					</div>
 				</div>
 			</div>

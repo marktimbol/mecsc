@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="form-group">
-						<button type="submit" name="submit" class="btn btn-primary">Update Speaker</button>
+						<button type="submit" class="btn btn-primary">Update Speaker</button>
 					</div>
 				</div>
 			</div>

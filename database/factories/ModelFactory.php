@@ -48,12 +48,6 @@ $factory->define(App\Agenda::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Category::class, function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->sentence,
-    ];
-});
-
 $factory->define(App\Role::class, function (Faker\Generator $faker) {
     return [
         'title'  => $faker->word,

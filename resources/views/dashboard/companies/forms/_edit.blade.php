@@ -23,7 +23,7 @@
 			</div>
 
 			<div class="form-group">
-				<button type="submit" name="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary">
 					Update Company
 				</button>
 			</div>

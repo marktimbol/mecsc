@@ -62,9 +62,7 @@ class AgendasController extends Controller
 
     public function destroy($agenda)
     {
-        $deleted = $agenda->delete();
-        
-        if( ! $deleted )
+        if( ! $this->agenda->delete($agenda) )
         {
             flash()->error('Oops. Something happen. Please try again.');
             return redirect()->back();
@@ -72,21 +70,5 @@ class AgendasController extends Controller
 
         flash()->success('Agenda has been successfully deleted!');
         return redirect()->route('dashboard.agendas.index');
-    }
-
-    public function addSpeaker($agenda, $speaker)
-    {
-        $agenda->speakers()->attach($speaker->id);
-
-        $result = $this->agenda->find($agenda->id);
-        return $result->speakers;
-    }
-
-    public function removeSpeaker($agenda, $speaker)
-    {
-        $agenda->speakers()->detach($speaker->id);
-
-        $result = $this->agenda->find($agenda->id);
-        return $result->speakers;
     }
 }

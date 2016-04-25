@@ -4,6 +4,9 @@ var update = require('react-addons-update');
 var _ = require('lodash');
 var algoliasearch = require('algoliasearch');
 
+import UserInfo from './UserInfo';
+import SearchUser from './SearchUser';
+
 var csrf_token = $('meta[name="csrf_token"]').attr('content');
 
 var index;
@@ -82,9 +85,7 @@ var CompanyContacts = React.createClass({
 		$.ajax({
 			url: url,
 			type: type,
-			data: {
-				data,
-			},
+			data: data,
 			headers: {
 				'X-CSRF-Token': csrf_token,
 			},
@@ -128,11 +129,7 @@ var CompanyContacts = React.createClass({
 		this.refreshAvailableContacts();
 
 		var url = '/dashboard/companies/' + window.company.id + '/contacts';
-		var data = {
-			'contact_id' : selectedContact.id
-		}
-
-		this.makeRequest('POST', url, data);
+		this.makeRequest('POST', url, { 'contact_id': selectedContact.id });
 	},
 
 	removeContact(selectedContact)
@@ -154,34 +151,15 @@ var CompanyContacts = React.createClass({
 	render()
 	{
 		var companyContacts = this.state.companyContacts.map(function(companyContact) {
+			var url = '/dashboard/users/' + companyContact.id;
 			return (
-				<li className="list-group-item User" key={companyContact.id}>
-					<div className="User__image">
-						<img src="/dist/img/user1-128x128.jpg" 
-							width="60" height="60" 
-							alt={companyContact.name} title={companyContact.name} 
-							className="img-circle" />
-					</div>
-
-					<div className="User__information">
-						<h5 className="User__name">
-							<a href="#">
-								{companyContact.name}
-							</a>
-						</h5>
-						<h6 className="User__designation">
-							{companyContact.designation} at {companyContact.company}
-						</h6>
-					</div>
-
-					<div className="User__action">
-						<button type="submit" 
-							className="btn btn-link"
-							onClick={() => this.removeContact(companyContact)}>
-								<i className="fa fa-minus"></i>
-						</button>
-					</div>
-				</li>   
+				<UserInfo 
+					key={companyContact.id}
+					user={companyContact}
+					url={url}
+					action={'remove'}
+					showAddButton={false}
+					onDelete={this.removeContact} />
 			);
 		}.bind(this));		
 
@@ -194,38 +172,14 @@ var CompanyContacts = React.createClass({
 				}
 			});
 
-			var userUrl = '/dashboard/users/' + availableContact.id;
+			var url = '/dashboard/users/' + availableContact.id;
 			return (
-				<li className="list-group-item User" key={availableContact.id}>
-					<div className="User__image">
-						<img src="/dist/img/user1-128x128.jpg" 
-							width="60" height="60" 
-							alt={availableContact.name} title={availableContact.name} 
-							className="img-circle" />
-					</div>
-
-					<div className="User__information">
-						<h5 className="User__name">
-							<a href={userUrl}>
-								{availableContact.name}
-							</a>
-						</h5>
-						<h6 className="User__designation">
-							{availableContact.designation} at {availableContact.company}
-						</h6>
-					</div>
-
-					{ ! isPartOfThisCompany ?
-						<div className="User__action">
-							<button type="submit" 
-								className="btn btn-link"
-								onClick={() => this.addContact(availableContact)}>
-									<i className="fa fa-plus"></i>
-							</button>
-						</div>
-						: ''
-					}
-				</li>   
+				<UserInfo 
+					key={availableContact.id}
+					user={availableContact}
+					url={url}
+					showAddButton={!isPartOfThisCompany}
+					onSave={this.addContact} />
 			);
 		}.bind(this));
 
@@ -237,21 +191,11 @@ var CompanyContacts = React.createClass({
 				</ul>
 
 				<h3>Available Contacts</h3>
-				<form onSubmit={() => this.searchContact}>
-					<div className="form-group">
-						<input 
-							type="text" 
-							placeholder="Find Contact"
-							className="form-control typeahead"
-							value={this.state.searchKey}
-							onChange={this.handleChangeSearch}/>
-					</div>
-					<div className="form-group">
-						<button className="btn btn-default" onClick={this.searchContact}>
-							<i className="fa fa-search"></i> Search
-						</button>
-					</div>
-				</form>
+				<SearchUser 
+					onSubmit={this.searchContact}
+					value={this.state.searchKey}
+					placeholder={'Search Contacts'}
+					onChange={this.handleChangeSearch} />
 
 				<ul className="list-group">
          			{availableContacts}

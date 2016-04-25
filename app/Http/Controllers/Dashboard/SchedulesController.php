@@ -34,9 +34,9 @@ class SchedulesController extends Controller
         return redirect()->route('dashboard.schedules.index');
     }
 
-    public function destroy($id)
+    public function destroy($schedule)
     {
-        if( ! $this->schedule->delete($id) )
+        if( ! $this->schedule->delete($schedule) )
         {
             flash()->success('Goood goood. You are now close to the dark side.');
             return redirect()->back();

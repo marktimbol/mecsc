@@ -22,7 +22,7 @@ class AgendaSpeakerTest extends TestCase
 
         $speaker = factory(App\Speaker::class)->create();
 
-        $response = $this->call('POST', '/dashboard/agendas/'.$agenda->id.'/speaker/'.$speaker->id);
+        $response = $this->call('POST', '/dashboard/agendas/'.$agenda->id.'/speakers', ['speaker_id' => $speaker->id]);
 
         $this->seeInDatabase('agenda_speakers', [
             'agenda_id'     => $agenda->id,
@@ -36,9 +36,9 @@ class AgendaSpeakerTest extends TestCase
         ]);
 
         $speaker = factory(App\Speaker::class)->create();
-        $agenda->speakers()->attach($speaker->id);
-
-        $response = $this->call('DELETE', '/dashboard/agendas/'.$agenda->id.'/speaker/'.$speaker->id);
+        $agenda->addSpeaker($speaker->id);
+        
+        $response = $this->call('DELETE', '/dashboard/agendas/'.$agenda->id.'/speakers/'.$speaker->id);
 
         $this->dontSeeInDatabase('agenda_speakers', [
             'agenda_id'     => $agenda->id,
