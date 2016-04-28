@@ -64,3 +64,9 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/', 'Auth\AuthController@showLoginForm');
     Route::auth();
 });
+ 
+Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
+	Route::resource('users.conversations', 'Api\ConversationsController', [
+		'only' => ['store']
+	]);
+});

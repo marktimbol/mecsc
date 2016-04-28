@@ -20,7 +20,7 @@
                             	</a>
                                 <br /><br />
                                 <p class="text-muted">
-                                    {{ $agenda->venue }}
+                                    Venue: {{ $agenda->venue }}
                                 </p>
                             </h3>
 
@@ -29,6 +29,7 @@
                             </div>
 
                             <div class="timeline-footer">
+                                <label class="text-muted">Speakers:</label>
                             	@foreach( $agenda->speakers as $speaker )
                             		<span class="label label-info">
                             			<a href="{{ route('dashboard.users.show', $speaker->id) }}">

@@ -12,7 +12,7 @@ class User extends Authenticatable
     use AddRemoveRoles;
 
     protected $fillable = [
-        'name', 'email', 'password', 'designation', 'company', 'about'
+        'name', 'email', 'password', 'designation', 'company', 'about', 'api_token'
     ];
 
     protected $hidden = [
@@ -29,5 +29,15 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function startConversation($conversation)
+    {
+        return Conversation::create($conversation);
+    }
+
+    public function replyTo(Conversation $conversation, Reply $reply)
+    {
+
     }
 }

@@ -5,7 +5,7 @@
 			@include('errors.form')
 
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<div class="form-group">
 						<label>Schedule</label>
 						<select name="schedule_id" class="form-control">
@@ -13,16 +13,6 @@
 							@foreach( $schedules as $schedule )
 								<option value="{{ $schedule->id }}">{{ $schedule->eventDate }}</option>
 							@endforeach
-						</select>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="form-group">
-						<label>Category</label>
-						<select name="category_id" class="form-control">
-							<option value=""></option>
-							<option value="1">Technology</option>
 						</select>
 					</div>
 				</div>

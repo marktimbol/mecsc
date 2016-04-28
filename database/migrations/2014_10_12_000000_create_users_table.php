@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('designation');
             $table->string('company');
             $table->text('about');
+            $table->string('api_token', 60)->unique();
             $table->rememberToken();
             $table->timestamps();
         });
