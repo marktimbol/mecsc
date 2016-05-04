@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('designation');
             $table->string('company');
             $table->text('about');
+            $table->enum('notify', ['y', 'n'])->default('y');
             $table->string('api_token', 60)->unique();
             $table->rememberToken();
             $table->timestamps();

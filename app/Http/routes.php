@@ -66,7 +66,11 @@ Route::group(['middleware' => 'web'], function () {
 });
  
 Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
-	Route::resource('users.conversations', 'Api\ConversationsController', [
+	Route::resource('conversations.replies', 'Api\RepliesController', [
 		'only' => ['store']
+	]);
+
+	Route::resource('conversations', 'Api\ConversationsController', [
+		'only' => ['index', 'show', 'store']
 	]);
 });

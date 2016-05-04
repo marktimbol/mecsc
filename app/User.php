@@ -7,9 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use AlgoliaEloquentTrait;
     use Algolia;
+    use AlgoliaEloquentTrait;
     use AddRemoveRoles;
+    use UserRelationships;
+    use UserConversations;
 
     protected $fillable = [
         'name', 'email', 'password', 'designation', 'company', 'about', 'api_token'
@@ -26,18 +28,9 @@ class User extends Authenticatable
     
     public $indices = ['mecsc_users'];
 
-    public function roles()
+    public function setNameAttribute($name)
     {
-        return $this->belongsToMany(Role::class, 'user_roles');
-    }
-
-    public function startConversation($conversation)
-    {
-        return Conversation::create($conversation);
-    }
-
-    public function replyTo(Conversation $conversation, Reply $reply)
-    {
-
+        $this->attributes['name'] = $name;
+        $this->attributes['api_token'] = str_random(60);
     }
 }

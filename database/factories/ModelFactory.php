@@ -78,3 +78,9 @@ $factory->define(App\Company::class, function (Faker\Generator $faker) {
         'description'   => $faker->paragraph,
     ];
 });
+
+$factory->define(App\Conversation::class, function (Faker\Generator $faker) {
+    return [
+        'subject' => $faker->sentence,
+    ];
+});

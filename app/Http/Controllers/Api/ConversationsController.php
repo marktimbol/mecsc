@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Conversation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,14 +19,29 @@ class ConversationsController extends Controller
 		$this->user = Auth::guard('api')->user();
 	}
 
-    public function store(Request $request, $user)
+    public function index()
     {
-        $message = [
-            'from'  => $this->user->id,
-            'to'    => $user->id,
-            'message'   => $request->message,
-        ];
+        return $this->user->messages;
+    }
 
-    	return $this->user->startConversation($message);
+    public function show($conversation)
+    {
+        return $conversation;
+    }
+
+    public function store(Request $request)
+    {
+        $conversation = Conversation::create([
+            'subject'   => $request->subject,
+        ]);
+
+        $user = User::findOrFail($request->to);
+        
+        return $this->user->startConversation($user, $conversation);
+    }
+
+    public function update(Request $request, $conversation)
+    {
+
     }
 }
