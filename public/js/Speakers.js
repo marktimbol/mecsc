@@ -39023,14 +39023,14 @@ var Speakers = React.createClass({
 		e.preventDefault();
 		$('.typeahead').typeahead('close');
 
-		index.search(this.state.searchKey, { facetFilters: 'roles.title:Staff' }, function (error, result) {
+		index.search(this.state.searchKey, { facetFilters: 'roles.title:Speaker' }, function (error, result) {
 			this.setState({ availableSpeakers: result.hits });
 		}.bind(this), { hitsPerPage: 10, page: 0 });
 	},
 	refreshAvailableSpeakers: function refreshAvailableSpeakers() {
 		this.setState({ searchKey: '' });
 
-		index.search('', { facetFilters: 'roles.title:Staff' }, function (error, result) {
+		index.search('', { facetFilters: 'roles.title:Speaker' }, function (error, result) {
 			this.setState({ availableSpeakers: result.hits });
 		}.bind(this), {
 			hitsPerPage: 10,

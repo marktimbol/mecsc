@@ -3,10 +3,9 @@
 namespace Mecsc\Repositories;
 
 use App\User;
-use Mecsc\Contracts\UserInterface;
 
-class UserRepository implements UserInterface {
-
+class SpeakerRepository
+{
 	protected $availableSpeakers;
 
 	public function all()
@@ -27,7 +26,7 @@ class UserRepository implements UserInterface {
 	public function update($user, $data)
 	{
 		$user->fill($data->all());
-		return $user->save() ? true : false;
+		$user->save();
 	}
 
 	public function delete($user)

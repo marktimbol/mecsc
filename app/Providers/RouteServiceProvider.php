@@ -34,10 +34,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->model('users', User::class);
         $router->model('contacts', User::class);
+        $router->model('speakers', User::class);
         $router->model('roles', Role::class);
         $router->model('schedules', Schedule::class);
         $router->model('agendas', Agenda::class);
-        $router->model('speakers', User::class);
         $router->model('companies', Company::class);
         $router->model('threads', Thread::class);
     }

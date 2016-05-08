@@ -26,7 +26,7 @@ class ThreadsController extends Controller
 
     public function show($thread)
     {
-        return $thread;
+        return $thread->orderBy('created_at', 'DESC')->get();
     }
 
     public function store(Request $request)

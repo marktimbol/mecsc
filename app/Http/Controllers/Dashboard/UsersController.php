@@ -39,10 +39,7 @@ class UsersController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-    	if( ! $this->user->store($request) )
-        {
-            return redirect()->back()->withInput();
-        }
+    	$this->user->store($request);
 
         flash()->success('User has been successfully saved!');
         return redirect()->route('dashboard.users.index');

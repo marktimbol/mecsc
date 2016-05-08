@@ -114,6 +114,50 @@ class ThreadsTest extends TestCase
             'user_id'   => $jane->id,
             'message'   => 'Jane reply'
         ]);
+    }
 
+    public function test_a_user_can_view_single_conversation_from_first_message_to_last_message()
+    {
+        $john = factory(App\User::class)->create(['name' => 'John']);
+        $jane = factory(App\User::class)->create(['name' => 'Jane']);
+
+        $thread = factory(App\Thread::class)->create(['subject' => 'Hi Jane.']);
+        $john->startConversation($jane, $thread);
+
+        factory(App\Message::class)->create([
+            'thread_id' => $thread->id,
+            'user_id'   => $jane->id,
+            'message'   => 'Oh Hi John.'
+        ]);
+
+        factory(App\Message::class)->create([
+            'thread_id' => $thread->id,
+            'user_id'   => $john->id,
+            'message'   => 'How are you Jane?'
+        ]);
+
+        $this->json('GET', '/api/threads/'.$thread->id)
+            ->seeJson([
+                'message' => 'Hi Jane'
+            ]);
+        // $this->seeInDatabase('threads', [
+        //     'id'         => $thread->id,
+        //     'subject'    => 'Hi Jane.'
+        // ])
+        // ->seeInDatabase('messages', [
+        //     'thread_id' => $thread->id,
+        //     'user_id'   => $john->id,
+        //     'message'   => 'Hi Jane.'
+        // ])
+        // ->seeInDatabase('messages', [
+        //     'thread_id' => $thread->id,
+        //     'user_id'   => $jane->id,
+        //     'message'   => 'Oh Hi John.'
+        // ])
+        // ->seeInDatabase('messages', [
+        //     'thread_id' => $thread->id,
+        //     'user_id'   => $john->id,
+        //     'message'   => 'How are you Jane?'
+        // ]);
     }
 }
