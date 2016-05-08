@@ -9,6 +9,7 @@ class Schedule extends Model
     protected $fillable = ['eventDate', 'description'];
 
 	protected $dates = ['eventDate'];
+	protected $with = ['agendas'];
 
     public function agendas()
     {

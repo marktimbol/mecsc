@@ -74,3 +74,11 @@ Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
 		'only' => ['index', 'show', 'store']
 	]);
 });
+
+Route::group(['prefix' => 'api/public'], function() {
+	Route::resource('schedules', 'Api\SchedulesController', [
+		'only' => [
+			'index', 'show'
+		]
+	]);
+});

@@ -9,7 +9,7 @@ class ScheduleRepository implements ScheduleInterface {
 
 	public function all()
 	{
-		return Schedule::with('agendas')->get();
+		return Schedule::all();
 	}
 
 	public function store($data)
