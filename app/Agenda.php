@@ -21,6 +21,6 @@ class Agenda extends Model
 
 	public function speakers()
 	{
-		return $this->belongsToMany(Speaker::class, 'agenda_speakers');
+		return $this->belongsToMany(User::class, 'agenda_speakers', 'agenda_id', 'speaker_id');
 	}
 }

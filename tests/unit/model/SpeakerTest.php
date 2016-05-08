@@ -52,7 +52,7 @@ class SpeakerTest extends TestCase
 
     public function test_it_shows_update_form_when_editing_speaker()
     {
-        $speaker = factory(App\Speaker::class)->create();
+        $speaker = factory(App\User::class)->create();
 
         $this->visit('dashboard/speakers/'.$speaker->id.'/edit')
             ->see('Edit Speaker');
@@ -60,7 +60,7 @@ class SpeakerTest extends TestCase
 
     public function test_it_updates_speaker_data()
     {
-        $speaker = factory(App\Speaker::class)->create();
+        $speaker = factory(App\User::class)->create();
 
         $this->visit('dashboard/speakers/'.$speaker->id.'/edit')
             ->type('Web Developer', 'designation')
@@ -74,14 +74,14 @@ class SpeakerTest extends TestCase
 
     public function test_it_shows_specific_speaker()
     {
-        $speaker = factory(App\Speaker::class)->create();
+        $speaker = factory(App\User::class)->create();
         $this->visit('dashboard/speakers/'.$speaker->id)
             ->see($speaker->name); 
     }
 
     public function test_it_deletes_speaker_by_id()
     {
-        $speaker = factory(App\Speaker::class)->create();
+        $speaker = factory(App\User::class)->create();
         $response = $this->call('DELETE', 'dashboard/speakers/'.$speaker->id);
 
         $this->dontSeeInDatabase('speakers', [

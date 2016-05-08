@@ -6,7 +6,6 @@ use App\Agenda;
 use App\Company;
 use App\Role;
 use App\Schedule;
-use App\Speaker;
 use App\Thread;
 use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -38,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('roles', Role::class);
         $router->model('schedules', Schedule::class);
         $router->model('agendas', Agenda::class);
-        $router->model('speakers', Speaker::class);
+        $router->model('speakers', User::class);
         $router->model('companies', Company::class);
         $router->model('threads', Thread::class);
     }

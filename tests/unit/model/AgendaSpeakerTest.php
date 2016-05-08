@@ -20,7 +20,7 @@ class AgendaSpeakerTest extends TestCase
             'schedule_id' => factory(App\Schedule::class)->create(['description' => ''])->id,
         ]);
 
-        $speaker = factory(App\Speaker::class)->create();
+        $speaker = factory(App\User::class)->create();
 
         $response = $this->call('POST', '/dashboard/agendas/'.$agenda->id.'/speakers', ['speaker_id' => $speaker->id]);
 
@@ -35,7 +35,7 @@ class AgendaSpeakerTest extends TestCase
             'schedule_id' => factory(App\Schedule::class)->create(['description' => 'test'])->id,
         ]);
 
-        $speaker = factory(App\Speaker::class)->create();
+        $speaker = factory(App\User::class)->create();
         $agenda->addSpeaker($speaker->id);
         
         $response = $this->call('DELETE', '/dashboard/agendas/'.$agenda->id.'/speakers/'.$speaker->id);

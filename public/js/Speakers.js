@@ -38961,8 +38961,8 @@ var _ = require('lodash');
 var algoliasearch = require('algoliasearch');
 
 var csrf_token = $('meta[name="csrf_token"]').attr('content');
-
-var index;
+var client = algoliasearch("CU6OGKCO5Z", '9230fbbc6127c4250e0362facfe0f019');
+var index = client.initIndex('mecsc_users');
 
 var Speakers = React.createClass({
 	displayName: 'Speakers',
@@ -38974,9 +38974,6 @@ var Speakers = React.createClass({
 		};
 	},
 	componentDidMount: function componentDidMount() {
-		var client = algoliasearch("CU6OGKCO5Z", '9230fbbc6127c4250e0362facfe0f019');
-		index = client.initIndex('mecsc_speakers');
-
 		this.enableTypeahead();
 		this.refreshAvailableSpeakers();
 	},
@@ -38991,11 +38988,11 @@ var Speakers = React.createClass({
 			displayKey: 'name',
 			templates: {
 				notFound: function notFound() {
-					return '<div class="Suggestion--no-result"><p>No result found.</p></div>';
+					return '<div class="Suggestion--no-result">\n\t\t\t\t\t\t\t\t<p>No result found.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t';
 				},
 				suggestion: function suggestion(hit) {
 					var imagePath = '/dist/img/user1-128x128.jpg';
-					return '<div class="Suggestion">' + '<div class="Suggestion__figure">' + '<img src="' + imagePath + '" class="img-responsive" alt="" title="" />' + '</div>' + '<div class="Suggestion__content">' + '<h3 class="Suggestion__heading">' + hit._highlightResult.name.value + '</h3>' + '<address>' + '<p>' + hit.designation + ' at ' + hit.company + '</p>' + '</address>' + '</div>' + '</div>';
+					return '<div class="Suggestion">\n\t\t\t\t\t\t\t\t<div class="Suggestion__figure">\n\t\t\t\t\t\t\t\t\t<img src=' + imagePath + ' \n\t\t\t\t\t\t\t\t\t\tclass="img-responsive" \n\t\t\t\t\t\t\t\t\t\talt=' + hit.name + ' \n\t\t\t\t\t\t\t\t\t\ttitle=' + hit.name + ' />\n\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t<div class="Suggestion__content">\n\t\t\t\t\t\t\t\t\t<h3 class="Suggestion__heading">\n\t\t\t\t\t\t\t\t\t\t' + hit._highlightResult.name.value + '\n\t\t\t\t\t\t\t\t\t</h3>\n\t\t\t\t\t\t\t\t\t<address>\n\t\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\t' + hit.designation + ' at ' + hit.company + '\n\t\t\t\t\t\t\t\t\t\t</p>\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t</address>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>';
 				}
 
 			}
@@ -39026,16 +39023,19 @@ var Speakers = React.createClass({
 		e.preventDefault();
 		$('.typeahead').typeahead('close');
 
-		index.search(this.state.searchKey, null, function (error, result) {
+		index.search(this.state.searchKey, { facetFilters: 'roles.title:Staff' }, function (error, result) {
 			this.setState({ availableSpeakers: result.hits });
 		}.bind(this), { hitsPerPage: 10, page: 0 });
 	},
 	refreshAvailableSpeakers: function refreshAvailableSpeakers() {
 		this.setState({ searchKey: '' });
 
-		index.search('', null, function (error, result) {
+		index.search('', { facetFilters: 'roles.title:Staff' }, function (error, result) {
 			this.setState({ availableSpeakers: result.hits });
-		}.bind(this), { hitsPerPage: 10, page: 0 });
+		}.bind(this), {
+			hitsPerPage: 10,
+			page: 0
+		});
 	},
 	addSpeaker: function addSpeaker(selectedSpeaker) {
 		this.setState({

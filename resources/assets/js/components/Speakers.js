@@ -1,17 +1,17 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var update = require('react-addons-update');
-var _ = require('lodash');
-var algoliasearch = require('algoliasearch');
-
-var csrf_token = $('meta[name="csrf_token"]').attr('content');
-
-var index;
+const React = require('react');
+const ReactDOM = require('react-dom');
+const update = require('react-addons-update');
+const _ = require('lodash');
+const algoliasearch = require('algoliasearch');
 
 import UserInfo from './UserInfo';
 import SearchUser from './SearchUser';
 
-var Speakers = React.createClass({
+const csrf_token = $('meta[name="csrf_token"]').attr('content');
+const client = algoliasearch("CU6OGKCO5Z", '9230fbbc6127c4250e0362facfe0f019');
+const index = client.initIndex('mecsc_users');
+
+const Speakers = React.createClass({
 	getInitialState()
 	{
 		return {
@@ -23,9 +23,6 @@ var Speakers = React.createClass({
 
 	componentDidMount()
 	{
-		var client = algoliasearch("CU6OGKCO5Z", '9230fbbc6127c4250e0362facfe0f019');
-		index = client.initIndex('mecsc_speakers');
-
 		this.enableTypeahead();
 		this.refreshAvailableSpeakers();
 	},
@@ -44,26 +41,34 @@ var Speakers = React.createClass({
 				templates: {
 					notFound: function() {
 						return (
-							'<div class="Suggestion--no-result"><p>No result found.</p></div>'
+							`<div class="Suggestion--no-result">
+								<p>No result found.</p>
+								</div>
+							`
 						)
 					},
 					suggestion: function(hit) {
-						var imagePath = '/dist/img/user1-128x128.jpg';
+						const imagePath = '/dist/img/user1-128x128.jpg';
 						return (
-							'<div class="Suggestion">' +
-								'<div class="Suggestion__figure">' +
-									'<img src="'+imagePath+'" class="img-responsive" alt="" title="" />' +
-								'</div>' +
+							`<div class="Suggestion">
+								<div class="Suggestion__figure">
+									<img src=${imagePath} 
+										class="img-responsive" 
+										alt=${hit.name} 
+										title=${hit.name} />
+								</div>
 
-								'<div class="Suggestion__content">' +
-									'<h3 class="Suggestion__heading">' + hit._highlightResult.name.value + '</h3>' +
-									'<address>' +
-										'<p>' +
-											hit.designation + ' at ' + hit.company +
-										'</p>' +										
-									'</address>' +
-								'</div>' +
-							'</div>' 
+								<div class="Suggestion__content">
+									<h3 class="Suggestion__heading">
+										${ hit._highlightResult.name.value }
+									</h3>
+									<address>
+										<p>
+											${hit.designation} at ${hit.company}
+										</p>										
+									</address>
+								</div>
+							</div>`
 						)
 					}
 				
@@ -102,7 +107,7 @@ var Speakers = React.createClass({
 		e.preventDefault();
 		$('.typeahead').typeahead('close');
 
-		index.search(this.state.searchKey, null, function(error, result) {
+		index.search(this.state.searchKey, { facetFilters: 'roles.title:Staff' }, function(error, result) {
 		  	this.setState({ availableSpeakers: result.hits });
 		}.bind(this), { hitsPerPage: 10, page: 0 });
 	},
@@ -111,9 +116,13 @@ var Speakers = React.createClass({
 	{
 		this.setState({ searchKey: '' });
 
-		index.search('', null, function(error, result) {
+		index.search('', { facetFilters:'roles.title:Staff' }, function(error, result) {
 		  	this.setState({ availableSpeakers: result.hits });
-		}.bind(this), { hitsPerPage: 10, page: 0 });
+		}.bind(this),
+		{
+			hitsPerPage: 10, 
+			page: 0 
+		});
 	},
 
 	addSpeaker(selectedSpeaker)
@@ -124,13 +133,13 @@ var Speakers = React.createClass({
 
 		this.refreshAvailableSpeakers();
 
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speakers';
+		const url = '/dashboard/agendas/' + window.agenda.id + '/speakers';
 		this.makeRequest('POST', url, { 'speaker_id': selectedSpeaker.id});
 	},
 
 	removeSpeaker(selectedSpeaker)
 	{
-		var speakerIndex = _.findIndex(this.state.agendaSpeakers, function(agendaSpeaker) {
+		const speakerIndex = _.findIndex(this.state.agendaSpeakers, function(agendaSpeaker) {
 		    return agendaSpeaker.id == selectedSpeaker.id;
 		});
 
@@ -140,14 +149,14 @@ var Speakers = React.createClass({
 
 		this.refreshAvailableSpeakers();
 
-		var url = '/dashboard/agendas/' + window.agenda.id + '/speakers/' + selectedSpeaker.id;
+		const url = '/dashboard/agendas/' + window.agenda.id + '/speakers/' + selectedSpeaker.id;
 		this.makeRequest('DELETE', url, []);
 	},
 
 	render()
 	{
-		var agendaSpeakers = this.state.agendaSpeakers.map(function(speaker) {
-			var url = '/dashboard/speakers/'+speaker.id;
+		const agendaSpeakers = this.state.agendaSpeakers.map(function(speaker) {
+			const url = '/dashboard/speakers/' + speaker.id;
 			return (
 				<UserInfo 
 					key={speaker.id} 
@@ -159,8 +168,8 @@ var Speakers = React.createClass({
 			);
 		}.bind(this));		
 
-		var availableSpeakers = this.state.availableSpeakers.map(function(speaker) {
-			var isSpeakingOnThisAgenda = false;
+		const availableSpeakers = this.state.availableSpeakers.map(function(speaker) {
+			let isSpeakingOnThisAgenda = false;
 			this.state.agendaSpeakers.map(function(agendaSpeakers) {
 				if( agendaSpeakers.id === speaker.id )
 				{
@@ -168,7 +177,7 @@ var Speakers = React.createClass({
 				}
 			});
 
-			var url = '/dashboard/users/' + speaker.id;
+			const url = '/dashboard/users/' + speaker.id;
 			return (
 				<UserInfo 
 					key={speaker.id} 
