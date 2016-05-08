@@ -24,15 +24,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Speaker::class, function (Faker\Generator $faker) {
-    return [
-        'name' => $faker->name,
-        'designation'   => $faker->sentence,
-        'company'   => $faker->company,
-        'about' => $faker->paragraph,
-    ];
-});
-
 $factory->define(App\Schedule::class, function (Faker\Generator $faker) {
     return [
         'eventDate'  => $faker->date,

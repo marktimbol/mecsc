@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Http\Requests\CreateAgendaRequest;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use JavaScript;
 use Mecsc\Contracts\AgendaInterface;
 use Mecsc\Contracts\ScheduleInterface;
-use Mecsc\Contracts\SpeakerInterface;
 
 class AgendasController extends Controller
 {
@@ -19,11 +17,12 @@ class AgendasController extends Controller
     protected $agenda;
     protected $speaker;
 
-	public function __construct(ScheduleInterface $schedule, AgendaInterface $agenda, SpeakerInterface $speaker)
+	public function __construct(
+        ScheduleInterface $schedule, 
+        AgendaInterface $agenda)
 	{
         $this->schedule = $schedule;
         $this->agenda = $agenda;
-        $this->speaker = $speaker;
 	}
 
     public function index()

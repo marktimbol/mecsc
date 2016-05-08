@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSpeakersTable extends Migration
+class CreateThreadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,9 @@ class CreateSpeakersTable extends Migration
      */
     public function up()
     {
-        Schema::create('speakers', function (Blueprint $table) {
+        Schema::create('threads', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('designation');
-            $table->string('company');
-            $table->text('about');
+            $table->string('subject');
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ class CreateSpeakersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('speakers');
+        Schema::drop('threads');
     }
 }
