@@ -15,6 +15,6 @@ class ReindexAlgolia extends Job implements ShouldQueue
     public function handle()
     {
         User::reindex(false);
-        var_dump('reindexing users...');
+        // var_dump('reindexing users...');
     }
 }

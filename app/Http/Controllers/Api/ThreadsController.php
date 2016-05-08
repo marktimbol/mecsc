@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Conversation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Message;
+use App\Thread;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ConversationsController extends Controller
+class ThreadsController extends Controller
 {
 	protected $user;
 
@@ -24,23 +24,22 @@ class ConversationsController extends Controller
         return $this->user->messages;
     }
 
-    public function show($conversation)
+    public function show($thread)
     {
-        return $conversation;
+        return $thread;
     }
 
     public function store(Request $request)
     {
-        $conversation = Conversation::create([
+        $thread = Thread::create([
             'subject'   => $request->subject,
         ]);
 
-        $user = User::findOrFail($request->to);
-        
-        return $this->user->startConversation($user, $conversation);
+        $toUser = User::findOrFail($request->to);
+        return $this->user->startConversation($toUser, $thread);
     }
 
-    public function update(Request $request, $conversation)
+    public function update(Request $request, $thread)
     {
 
     }

@@ -1,25 +1,25 @@
 <?php
 
-use App\Conversation;
+use App\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class ConversationsTest extends TestCase
+class ThreadsTest extends TestCase
 {
 	use DatabaseMigrations;
 
-	public function test_an_unauthenticated_user_cannot_start_a_conversation_with_the_other_users()
+	public function test_an_unauthenticated_user_cannot_start_a_thread_with_the_other_users()
 	{
     	$jane = factory(App\User::class)->create();
 
-    	$this->json('POST', 'api/conversations', [
+    	$this->json('POST', 'api/threads', [
     		'api_token' => '',
             'to'    => $jane->id,
     		'subject'	=> 'Hi'
     	]);
 
-    	$this->dontSeeInDatabase('conversations', [
+    	$this->dontSeeInDatabase('threads', [
     		'subject'	=> 'Hi'
     	])
         ->dontSeeInDatabase('messages', [
@@ -35,42 +35,42 @@ class ConversationsTest extends TestCase
     	$john = factory(App\User::class)->create();
     	$jane = factory(App\User::class)->create();
 
-    	$this->json('POST', 'api/conversations', [
+    	$this->json('POST', 'api/threads', [
     		'api_token'     => $john->api_token,
             'to'            => $jane->id,
     		'subject'	    => 'Hi'
     	]);
 
-    	$this->seeInDatabase('conversations', [ 
+    	$this->seeInDatabase('threads', [ 
             'id'    => 1,  
             'subject'   => 'Hi'
     	])
         ->seeInDatabase('messages', [
-            'conversation_id'   => 1,
+            'thread_id'   => 1,
             'user_id'   => $john->id,
             'message'   => 'Hi'
         ])
         ->seeInDatabase('participants', [
-            'conversation_id'   => 1,
-            'user_id'           => $john->id
+            'thread_id'   => 1,
+            'user_id'     => $john->id
         ])
         ->seeInDatabase('participants', [
-            'conversation_id'   => 1,
-            'user_id'           => $jane->id,
+            'thread_id'   => 1,
+            'user_id'     => $jane->id,
         ]);
     }
 
-    public function test_a_user_can_view_all_his_conversations()
+    public function test_a_user_can_view_all_his_threads()
     {
         $john = factory(App\User::class)->create();
         $jane = factory(App\User::class)->create();
         $joan = factory(App\User::class)->create();
 
-        $conversation = factory(App\Conversation::class)->create();
-        $startConversation1 = $john->startConversation($jane, $conversation);
-        $startConversation2 = $john->startConversation($joan, $conversation);
+        $thread = factory(App\Thread::class)->create();
+        $startConversation1 = $john->startConversation($jane, $thread);
+        $startConversation2 = $john->startConversation($joan, $thread);
 
-        $this->json('GET', '/api/conversations', [
+        $this->json('GET', '/api/threads', [
             'api_token' => $john->api_token,
         ])
         ->seeJson([
@@ -81,36 +81,36 @@ class ConversationsTest extends TestCase
         ]);
     }
 
-    public function test_a_user_can_view_a_single_conversation()
+    public function test_a_user_can_view_a_single_thread()
     {
         $john = factory(App\User::class)->create();
         $jane = factory(App\User::class)->create();
 
-        $conversation = factory(App\Conversation::class)->create();
-        $startConversation = $john->startConversation($jane, $conversation);
+        $thread = factory(App\Thread::class)->create();
+        $startConversation = $john->startConversation($jane, $thread);
 
-        $this->json('GET', '/api/conversations/'.$conversation->id, [
+        $this->json('GET', '/api/threads/'.$thread->id, [
             'api_token' => $john->api_token
         ])
         ->seeJson([
-            'message'   => $conversation->subject
+            'message'   => $thread->subject
         ]);
     }
 
-    public function test_a_user_can_reply_to_a_conversation()
+    public function test_a_user_can_reply_to_a_thread()
     {
         $john = factory(App\User::class)->create();
         $jane = factory(App\User::class)->create();
 
-        $conversation = factory(App\Conversation::class)->create();
-        $startConversation = $john->startConversation($jane, $conversation);
+        $thread = factory(App\Thread::class)->create();
+        $startConversation = $john->startConversation($jane, $thread);
 
-        $this->json('POST', '/api/conversations/'.$conversation->id.'/replies', [
+        $this->json('POST', '/api/threads/'.$thread->id.'/replies', [
             'api_token' => $jane->api_token,
             'message'   => 'Jane reply'
         ])
         ->seeInDatabase('messages', [
-            'conversation_id'   => $conversation->id,
+            'thread_id'   => $thread->id,
             'user_id'   => $jane->id,
             'message'   => 'Jane reply'
         ]);

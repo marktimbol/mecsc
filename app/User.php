@@ -11,7 +11,7 @@ class User extends Authenticatable
     use AlgoliaEloquentTrait;
     use AddRemoveRoles;
     use UserRelationships;
-    use UserConversations;
+    use UserThreads;
 
     protected $fillable = [
         'name', 'email', 'password', 'designation', 'company', 'about', 'api_token'

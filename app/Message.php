@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    protected $fillable = ['conversation_id', 'user_id', 'message'];
+    protected $fillable = ['thread_id', 'user_id', 'message'];
 
-    public function conversation()
+    public function threads()
     {
-    	return $this->belongsTo(Conversation::class);
+    	return $this->belongsTo(Thread::class);
     }
 }

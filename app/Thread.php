@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Conversation extends Model
+class Thread extends Model
 {
     protected $fillable = ['subject'];
     protected $with = ['messages', 'participants'];

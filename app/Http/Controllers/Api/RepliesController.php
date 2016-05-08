@@ -17,13 +17,12 @@ class RepliesController extends Controller
 		$this->user = Auth::guard('api')->user();
 	}
 
-    public function store(Request $request, $conversation)
+    public function store(Request $request, $thread)
     {
     	$message = new Message([
-    		'user_id'	=> $this->user->id,
     		'message'	=> $request->message,
     	]);
 
-    	return $this->user->replyTo($conversation, $message);
+    	return $this->user->replyTo($thread, $message);
     }
 }

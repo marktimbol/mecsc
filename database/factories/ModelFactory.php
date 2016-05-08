@@ -79,8 +79,14 @@ $factory->define(App\Company::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Conversation::class, function (Faker\Generator $faker) {
+$factory->define(App\Thread::class, function (Faker\Generator $faker) {
     return [
         'subject' => $faker->sentence,
+    ];
+});
+
+$factory->define(App\Message::class, function (Faker\Generator $faker) {
+    return [
+        'message' => $faker->sentence,
     ];
 });

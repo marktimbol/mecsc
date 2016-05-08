@@ -14,7 +14,7 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('conversation_id')->unsigned()->index();
+            $table->integer('thread_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
         });
