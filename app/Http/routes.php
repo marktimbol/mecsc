@@ -76,6 +76,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
 });
 
 Route::group(['prefix' => 'api/public'], function() {
+
+	Route::post('login', 'Api\AuthController@getToken');
 	Route::resource('schedules', 'Api\SchedulesController', [
 		'only' => [
 			'index', 'show'

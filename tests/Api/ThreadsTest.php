@@ -136,9 +136,11 @@ class ThreadsTest extends TestCase
             'message'   => 'How are you Jane?'
         ]);
 
-        $this->json('GET', '/api/threads/'.$thread->id)
+        $this->json('GET', '/api/threads/'.$thread->id, [
+            'api_token' => $john->api_token
+            ])
             ->seeJson([
-                'message' => 'Hi Jane'
+                'message' => 'Hi Jane.'
             ]);
         // $this->seeInDatabase('threads', [
         //     'id'         => $thread->id,
