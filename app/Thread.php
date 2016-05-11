@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    protected $fillable = ['subject'];
+    protected $fillable = ['from', 'to', 'subject'];
     protected $with = ['messages', 'participants'];
 
     public function messages()

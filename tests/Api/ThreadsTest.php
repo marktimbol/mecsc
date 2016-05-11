@@ -43,6 +43,8 @@ class ThreadsTest extends TestCase
 
     	$this->seeInDatabase('threads', [ 
             'id'    => 1,  
+            'from'  => $john->id,
+            'to'    => $jane->id,
             'subject'   => 'Hi'
     	])
         ->seeInDatabase('messages', [

@@ -70,6 +70,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
 		'only' => ['store']
 	]);
 
+	Route::get('threads/hasCommunicated/{user}', 'Api\ThreadsController@hasCommunicated');
 	Route::resource('threads', 'Api\ThreadsController', [
 		'only' => ['index', 'show', 'store']
 	]);

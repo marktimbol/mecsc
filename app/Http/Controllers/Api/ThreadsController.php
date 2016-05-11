@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Message;
+use App\Participant;
 use App\Thread;
 use App\User;
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ class ThreadsController extends Controller
     public function store(Request $request)
     {
         $thread = Thread::create([
+            'from'  => $this->user->id,
+            'to'    => $request->to,
             'subject'   => $request->subject,
         ]);
 
@@ -43,4 +46,23 @@ class ThreadsController extends Controller
     {
 
     }
+
+    public function hasCommunicated($with)
+    {
+        $thread = Thread::whereFrom($this->user->id)
+                        ->where('to', $with);
+
+        if( $thread->count() !== 0 )
+        {
+            return response()->json([
+                'hasCommunicated' => true,
+                'thread' => $thread->first()
+            ]);
+        }
+
+        return response()->json([
+            'hasCommunicated' => false,
+        ]);
+    }
+
 }
