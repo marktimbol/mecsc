@@ -34,7 +34,7 @@ class ThreadsController extends Controller
     {
         $thread = Thread::create([
             'from'  => $this->user->id,
-            'to'    => $request->to,
+            'user_id'    => $request->to,
             'subject'   => $request->subject,
         ]);
 

@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    protected $fillable = ['from', 'to', 'subject'];
-    protected $with = ['messages', 'participants'];
+    protected $fillable = ['from', 'user_id', 'subject'];
+    protected $with = ['user', 'messages'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function messages()
     {

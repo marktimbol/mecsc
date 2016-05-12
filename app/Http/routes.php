@@ -69,7 +69,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
 	Route::resource('threads.replies', 'Api\RepliesController', [
 		'only' => ['store']
 	]);
-
+	Route::get('user/threads', 'Api\UserThreadsController@index');
+	Route::get('user/threads/{threads}', 'Api\UserThreadsController@show');
 	Route::get('threads/hasCommunicated/{user}', 'Api\ThreadsController@hasCommunicated');
 	Route::resource('threads', 'Api\ThreadsController', [
 		'only' => ['index', 'show', 'store']

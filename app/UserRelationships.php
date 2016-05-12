@@ -13,4 +13,9 @@ trait UserRelationships
     {
     	return $this->hasMany(Message::class);
     }
+
+    public function threads()
+    {
+    	return $this->hasMany(Thread::class);
+    }
 }

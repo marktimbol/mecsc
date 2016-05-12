@@ -2,6 +2,7 @@
 
 namespace App;
 
+
 trait UserThreads
 {
     public function startConversation(User $toUser, Thread $thread)
@@ -13,8 +14,18 @@ trait UserThreads
             ])
         );
 
-        $thread->participants()->attach($this->id);
-        $thread->participants()->attach($toUser->id);
+        Participant::create([
+            'thread_id' => $thread->id,
+            'user_id'   => $this->id,
+        ]);
+
+        Participant::create([
+            'thread_id' => $thread->id,
+            'user_id'   => $toUser->id,
+        ]);
+
+        // $thread->participants()->attach($this->id);
+        // $thread->participants()->attach($toUser->id);
 
         return $thread;
     }
