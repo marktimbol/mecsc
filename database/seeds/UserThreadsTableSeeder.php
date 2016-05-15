@@ -39,7 +39,12 @@ class UserThreadsTableSeeder extends Seeder
         $thread = factory(App\Thread::class)->create([
             'from'  => $john->id,
             'user_id'    => $jane->id,
-            'subject'   => 'Hey Jane'
+            'subject'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
         ]);
         $john->startConversation($jane, $thread);
 
@@ -50,7 +55,12 @@ class UserThreadsTableSeeder extends Seeder
         $thread2 = factory(App\Thread::class)->create([
             'from'  => $john->id,
             'user_id'    => $joan->id,
-            'subject'   => 'Hey Joan'
+            'subject'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
         ]);
         $john->startConversation($joan, $thread2);
 
@@ -59,7 +69,12 @@ class UserThreadsTableSeeder extends Seeder
          * John send a message again to Jane
          */
         $message = factory(App\Message::class)->create([
-            'message'   => 'Are you free tonight?'
+            'message'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
         ]);
         $john->replyTo($thread, $message);
 
@@ -68,7 +83,10 @@ class UserThreadsTableSeeder extends Seeder
          * Jane replies to John
          */
         $message = factory(App\Message::class)->create([
-            'message'   => 'Oh hey John.'
+            'message'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse'
         ]);
         $jane->replyTo($thread, $message);
 
@@ -77,7 +95,12 @@ class UserThreadsTableSeeder extends Seeder
          * John replies to Jane's message
          */
         $message = factory(App\Message::class)->create([
-            'message'   => 'How are you Jane?'
+            'message'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
         ]);
         $john->replyTo($thread, $message);
     }

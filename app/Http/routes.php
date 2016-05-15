@@ -85,4 +85,9 @@ Route::group(['prefix' => 'api/public'], function() {
 			'index', 'show'
 		]
 	]);
+	Route::resource('speakers', 'Api\SpeakersController', [
+		'only' => [
+			'index', 'show'
+		]	
+	]);
 });
