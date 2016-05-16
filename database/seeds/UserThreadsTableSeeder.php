@@ -36,72 +36,30 @@ class UserThreadsTableSeeder extends Seeder
          * Start the conversation
          * John sends a message to Jane
          */
-        $thread = factory(App\Thread::class)->create([
-            'from'  => $john->id,
-            'user_id'    => $jane->id,
-            'subject'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ]);
-        $john->startConversation($jane, $thread);
+        $thread = $john->startConversation($jane->id, 'Hi Jane');
 
         /**
          * Start the conversation
          * John sends a message to Joan
          */
-        $thread2 = factory(App\Thread::class)->create([
-            'from'  => $john->id,
-            'user_id'    => $joan->id,
-            'subject'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ]);
-        $john->startConversation($joan, $thread2);
+        // $thread2 = $john->startConversation($joan->id, 'Hi Joan');
 
         /**
          * Reply to a conversation
          * John send a message again to Jane
          */
-        $message = factory(App\Message::class)->create([
-            'message'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ]);
-        $john->replyTo($thread, $message);
+        $john->replyTo($thread, 'Hi Jane');
 
         /**
          * Reply to a conversation
          * Jane replies to John
          */
-        $message = factory(App\Message::class)->create([
-            'message'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse'
-        ]);
-        $jane->replyTo($thread, $message);
+        $jane->replyTo($thread, 'Hey Jon');
 
         /**
          * Reply to a conversation
          * John replies to Jane's message
          */
-        $message = factory(App\Message::class)->create([
-            'message'   => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ]);
-        $john->replyTo($thread, $message);
+        $john->replyTo($thread, 'Glad you replied back');
     }
 }

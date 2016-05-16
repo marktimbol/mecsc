@@ -32,14 +32,7 @@ class ThreadsController extends Controller
 
     public function store(Request $request)
     {
-        $thread = Thread::create([
-            'from'  => $this->user->id,
-            'user_id'    => $request->to,
-            'subject'   => $request->subject,
-        ]);
-
-        $toUser = User::findOrFail($request->to);
-        return $this->user->startConversation($toUser, $thread);
+        return $this->user->startConversation($request->receiver_id, $request->message);
     }
 
     public function update(Request $request, $thread)

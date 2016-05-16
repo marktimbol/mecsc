@@ -1,4 +1,4 @@
-<?php
+e<?php
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +15,7 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('thread_id')->unsigned()->index();
-            $table->integer('user_id')->unsigned()->index();
+            $table->integer('sender_id')->unsigned()->index();
             $table->text('message');
             $table->timestamps();
         });

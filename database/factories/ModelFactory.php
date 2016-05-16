@@ -72,7 +72,7 @@ $factory->define(App\Company::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Thread::class, function (Faker\Generator $faker) {
     return [
-        'subject' => $faker->sentence,
+        'message' => $faker->sentence,
     ];
 });
 

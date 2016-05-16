@@ -19,10 +19,6 @@ class RepliesController extends Controller
 
     public function store(Request $request, $thread)
     {
-    	$message = new Message([
-    		'message'	=> $request->message,
-    	]);
-
-    	return $this->user->replyTo($thread, $message);
+    	return $this->user->replyTo($thread, $request->message);
     }
 }

@@ -5,34 +5,35 @@ namespace App;
 
 trait UserThreads
 {
-    public function startConversation(User $toUser, Thread $thread)
+    public function startConversation($withUser, $withThisMessage)
     {
-        $this->messages()->save(
+        // $thread = $this->sentMessages()->attach($withUser, [
+        //     'message'   => $withThisMessage
+        // ]);
+
+        $thread = Thread::create([
+            'sender_id' => $this->id,
+            'receiver_id'   => $withUser,
+            'message'   => $withThisMessage
+        ]);
+
+        $newMessage = $thread->messages()->save(
             new Message([
-                'thread_id'   => $thread->id,
-                'message'   => $thread->subject
+                'sender_id' => $this->id,
+                'message' => $withThisMessage
             ])
         );
-
-        Participant::create([
-            'thread_id' => $thread->id,
-            'user_id'   => $this->id,
-        ]);
-
-        Participant::create([
-            'thread_id' => $thread->id,
-            'user_id'   => $toUser->id,
-        ]);
-
-        // $thread->participants()->attach($this->id);
-        // $thread->participants()->attach($toUser->id);
 
         return $thread;
     }
 
-    public function replyTo(Thread $thread, Message $message)
+    public function replyTo(Thread $thread, $withThisMessage)
     {
-        $message['thread_id'] = $thread->id;
-        $this->messages()->save($message);
+        return $thread->messages()->save(
+            new Message([
+                'sender_id' => $this->id,
+                'message'   => $withThisMessage
+            ])
+        );
     }
 }

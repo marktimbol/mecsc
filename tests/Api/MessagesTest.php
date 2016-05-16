@@ -15,13 +15,14 @@ class MessagesTest extends TestCase
     	
         $this->json('POST', 'api/threads', [
             'api_token' => $john->api_token,
-            'to'    => $jane->id,
-            'subject' => 'Hi'
+            'receiver_id'    => $jane->id,
+            'message' => 'Hi'
        ]);
 
-        $this->seeInDatabase('participants', [
-            'thread_id' => 1,
-            'user_id'   => $john->id,
+        $this->seeInDatabase('threads', [
+            'sender_id' => $john->id,
+            'receiver_id'   => $jane->id,
+            'message'   => 'Hi'
         ]);
 
     	// $this->json('GET', '/api/user/threads', [
