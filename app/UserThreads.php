@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events\UserReplied;
+
 
 trait UserThreads
 {
@@ -29,11 +31,16 @@ trait UserThreads
 
     public function replyTo(Thread $thread, $withThisMessage)
     {
-        return $thread->messages()->save(
-            new Message([
-                'sender_id' => $this->id,
-                'message'   => $withThisMessage
-            ])
-        );
+        $message = Message::create([
+            'thread_id' => $thread->id,
+            'sender_id' => $this->id,
+            'message' => $withThisMessage
+        ]);
+
+        // $thread->messages()->save($newMessage);
+
+        event( new UserReplied($message) );
+
+        return $message;
     }
 }

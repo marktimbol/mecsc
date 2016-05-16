@@ -11,20 +11,20 @@ trait UserRelationships
 
     public function messages()
     {
-    	return $this->hasMany(Message::class, 'sender_id');
+    	return $this->hasMany(Message::class);
     }
 
-    public function sentMessages()
-    {
-        return $this->belongsToMany(User::class, 'threads', 'sender_id', 'receiver_id')
-                    ->withPivot('message')
-                    ->withTimestamps();
-    }
+    // public function sentMessages()
+    // {
+    //     return $this->belongsToMany(User::class, 'threads', 'sender_id', 'receiver_id')
+    //                 ->withPivot('message')
+    //                 ->withTimestamps();
+    // }
 
-    public function receivedMessages()
-    {
-        return $this->belongsToMany(User::class, 'threads', 'receiver_id', 'sender_id')
-                    ->withPivot('message')
-                    ->withTimestamps();
-    }
+    // public function receivedMessages()
+    // {
+    //     return $this->belongsToMany(User::class, 'threads', 'receiver_id', 'sender_id')
+    //                 ->withPivot('message')
+    //                 ->withTimestamps();
+    // }
 }

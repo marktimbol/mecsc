@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Participant;
 use App\Thread;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,8 +21,9 @@ class UserThreadsController extends Controller
 
     public function index()
     {
-    	$threadIds =  Participant::whereUserId($this->user->id)->lists('thread_id');
-    	return Thread::findMany($threadIds);
+        return Thread::where('sender_id', $this->user->id)
+                    ->OrWhere('receiver_id', $this->user->id)
+                    ->get();
     }
 
     public function show($thread)
