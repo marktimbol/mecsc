@@ -79,12 +79,13 @@ Route::group(['middleware' => 'web'], function () {
 });
  
 Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
+	Route::get('/hasCommunicated/{users}', 'Api\UsersController@hasCommunicated');
 	Route::resource('threads.replies', 'Api\RepliesController', [
 		'only' => ['store']
 	]);
 	Route::get('user/threads', 'Api\UserThreadsController@index');
 	Route::get('user/threads/{threads}', 'Api\UserThreadsController@show');
-	Route::get('threads/hasCommunicated/{user}', 'Api\ThreadsController@hasCommunicated');
+	// Route::get('threads/hasCommunicated/{user}', 'Api\ThreadsController@hasCommunicated');
 	Route::resource('threads', 'Api\ThreadsController', [
 		'only' => ['index', 'show', 'store']
 	]);
@@ -92,7 +93,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'auth:api'], function() {
 
 Route::group(['prefix' => 'api/public'], function() {
 
-	Route::post('login', 'Api\AuthController@getToken');
+	Route::post('login', 'Api\AuthController@login');
 	Route::resource('schedules', 'Api\SchedulesController', [
 		'only' => [
 			'index', 'show'

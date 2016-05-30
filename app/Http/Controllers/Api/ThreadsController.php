@@ -42,8 +42,8 @@ class ThreadsController extends Controller
 
     public function hasCommunicated($with)
     {
-        $thread = Thread::whereFrom($this->user->id)
-                        ->where('to', $with);
+        $thread = Thread::where('sender_id', $this->user->id)
+                        ->where('receiver_id', $with);
 
         if( $thread->count() !== 0 )
         {

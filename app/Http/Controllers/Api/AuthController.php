@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function getToken(Request $request)
+    public function login(Request $request)
     {
     	$credentials = [
     		'email'	=> $request->email,
@@ -26,9 +26,6 @@ class AuthController extends Controller
     	}
 
     	return response()->json([
-            'user' => [
-                'api_token' => '',
-            ],
     		'authenticated' => false,
     	]);
     }
