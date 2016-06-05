@@ -23,6 +23,7 @@ class UserThreadsController extends Controller
     {
         return Thread::where('sender_id', $this->user->id)
                     ->OrWhere('receiver_id', $this->user->id)
+                    ->orderBy('created_at', 'DESC')
                     ->get();
     }
 

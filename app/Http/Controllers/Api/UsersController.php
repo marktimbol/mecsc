@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,20 +17,30 @@ class UsersController extends Controller
 		$this->user = Auth::guard('api')->user();
 	}
 
-    public function hasCommunicated($user)
+    public function haveConversation($user1, $user2)
     {
-        $thread = Thread::where('sender_id', $this->user->id)
-                        ->where('receiver_id', $user->id);
+        $sender_id = $user1;
+        $receiver_id = $user2;
 
-        if( $thread->count() !== 0 )
+        $result = Thread::where('sender_id', $sender_id)
+                ->where('receiver_id', $receiver_id);
+
+        if( $result->count() == 0 )
         {
-            return response()->json([
-                'hasCommunicated' => true,
-            ]);
+            // Flip the condition
+            $result = Thread::where('receiver_id', $sender_id)
+                    ->where('sender_id', $receiver_id); 
+
+            if( $result->count() == 0 ) {
+                return response()->json([
+                    'haveConversation' => false
+                ]);
+            }
         }
 
         return response()->json([
-            'hasCommunicated' => false,
+            'thread' => $result->orderBy('created_at', 'DESC')->first(),
+            'haveConversation' => true
         ]);
     }
 }

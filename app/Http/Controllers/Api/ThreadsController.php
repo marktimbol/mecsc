@@ -40,22 +40,4 @@ class ThreadsController extends Controller
 
     }
 
-    public function hasCommunicated($with)
-    {
-        $thread = Thread::where('sender_id', $this->user->id)
-                        ->where('receiver_id', $with);
-
-        if( $thread->count() !== 0 )
-        {
-            return response()->json([
-                'hasCommunicated' => true,
-                'thread' => $thread->first()
-            ]);
-        }
-
-        return response()->json([
-            'hasCommunicated' => false,
-        ]);
-    }
-
 }

@@ -19,14 +19,15 @@ class AuthController extends Controller
 
     	if( Auth::attempt($credentials) )
     	{
-    		return response()->json([
-    			'user' => Auth::user(),
-    			'authenticated' => true,
-    		]);
+            return Auth::user();
+    		// return response()->json([
+    		// 	'user' => Auth::user(),
+    		// 	'authenticated' => true,
+    		// ]);
     	}
 
     	return response()->json([
-    		'authenticated' => false,
+    		'api_token' => '',
     	]);
     }
 }
