@@ -46,27 +46,32 @@ $factory->define(App\Role::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Schedule::class, function (Faker\Generator $faker) {
-    return [
-        'eventDate'  => $faker->date,
-    ];
-});
 
-$factory->define(App\Agenda::class, function (Faker\Generator $faker) {
-    return [
-        'schedule_id'   => 1,
-        'time'  => sprintf('%s - %s', $faker->time, $faker->time),
-        'venue' => $faker->streetName,
-        'title' => $faker->sentence,
-        'description' => $faker->paragraph(10)
-    ];
-});
+// $factory->define(App\Agenda::class, function (Faker\Generator $faker) {
+//     return [
+//         'schedule_id'   => 1,
+//         'time'  => sprintf('%s - %s', $faker->time, $faker->time),
+//         'venue' => $faker->streetName,
+//         'title' => $faker->sentence,
+//         'description' => $faker->paragraph(10)
+//     ];
+// });
 
 $factory->define(App\Company::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->sentence,
         'standNumber'  => $faker->randomNumber(3),
         'description'   => $faker->paragraph,
+    ];
+});
+
+$factory->define(App\Exhibitor::class, function (Faker\Generator $faker) {
+    return [
+        'name'          => $faker->sentence,
+        'standNumber'   => $faker->randomNumber(3),
+        'country'       => $faker->country,
+        'website'       => $faker->url,
+        'about'         => $faker->paragraph,
     ];
 });
 

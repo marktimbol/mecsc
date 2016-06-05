@@ -71,6 +71,11 @@ Route::group([ 'middleware' => ['web', 'auth'], 'prefix' => 'dashboard'], functi
 		'only' => ['store', 'destroy']
 	]);
 	Route::resource('companies', 'Dashboard\CompaniesController');
+
+	/**
+	 * Exhibitors
+	 */
+	Route::resource('exhibitors', 'Dashboard\ExhibitorsController');
 });
 
 Route::group(['middleware' => 'web'], function () {

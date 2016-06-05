@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Agenda;
 use App\Company;
+use App\Exhibitor;
 use App\Role;
 use App\Schedule;
 use App\Thread;
@@ -39,6 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('schedules', Schedule::class);
         $router->model('agendas', Agenda::class);
         $router->model('companies', Company::class);
+        $router->model('exhibitors', Exhibitor::class);
         $router->model('threads', Thread::class);
     }
 

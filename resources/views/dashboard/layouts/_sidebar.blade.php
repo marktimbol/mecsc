@@ -61,6 +61,13 @@
 			</li>
 
 			<li>
+				<a href="{{ route('dashboard.exhibitors.index') }}">
+					<i class="fa fa-users"></i>
+					<span>Exhibitors</span>
+				</a>
+			</li>
+
+			<li>
 				<a href="{{ route('dashboard.companies.index') }}">
 					<i class="fa fa-users"></i>
 					<span>Companies</span>
