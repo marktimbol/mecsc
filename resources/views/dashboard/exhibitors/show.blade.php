@@ -24,8 +24,13 @@
 							<li class="list-group-item">
 								<strong>Country:</strong> {{ $exhibitor->country }}
 							</li>
+							<li class="list-group-item">
+								<strong>Website Url:</strong> 
+								<a href="{{ $exhibitor->website }}" target="_blank">
+									{{ $exhibitor->website }}
+								</a>
+							</li>
 						</ul>	
-
 						<h3>About</h3>
 						{!! $exhibitor->about !!}
 					</div>

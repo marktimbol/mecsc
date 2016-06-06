@@ -14,12 +14,20 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = factory(App\User::class)->create([
+        $mark = factory(App\User::class)->create([
         	'name'	=> 'Mark Timbol',
         	'email'	=> 'mark@timbol.com',
         	'password'	=> bcrypt('marktimbol')
         ]);
-        (new Admin)->add($user);
+        (new Admin)->add($mark);
+
+        $sabordo = factory(App\User::class)->create([
+            'name'  => 'Sabordo',
+            'email' => 'sabordo@timbol.com',
+            'password'  => bcrypt('sabordo')
+        ]);
+        (new Speaker)->add($sabordo);
+
         dispatch(new ReindexAlgolia);
             
         factory(App\User::class, 10)->create();
