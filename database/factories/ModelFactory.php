@@ -75,6 +75,14 @@ $factory->define(App\Exhibitor::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Media::class, function (Faker\Generator $faker) {
+    return [
+        'name'          => $faker->sentence,
+        'website'       => $faker->url,
+        'about'         => $faker->paragraph,
+    ];
+});
+
 $factory->define(App\Thread::class, function (Faker\Generator $faker) {
     return [
         'message' => $faker->sentence,

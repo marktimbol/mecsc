@@ -76,6 +76,11 @@ Route::group([ 'middleware' => ['web', 'auth'], 'prefix' => 'dashboard'], functi
 	 * Exhibitors
 	 */
 	Route::resource('exhibitors', 'Dashboard\ExhibitorsController');
+
+	/**
+	 * Media Partners
+	 */
+	Route::resource('medias', 'Dashboard\MediasController');
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -107,4 +112,7 @@ Route::group(['prefix' => 'api/public'], function() {
 			'index', 'show'
 		]	
 	]);
+
+	Route::get('exhibitors', 'Api\ExhibitorsController@index');
+	Route::get('medias', 'Api\MediasController@index');
 });
