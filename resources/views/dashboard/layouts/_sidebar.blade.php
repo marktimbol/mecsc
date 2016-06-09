@@ -68,6 +68,13 @@
 			</li>
 
 			<li>
+				<a href="{{ route('dashboard.medias.index') }}">
+					<i class="fa fa-users"></i>
+					<span>Media Partners</span>
+				</a>
+			</li>
+
+			<li>
 				<a href="{{ route('dashboard.companies.index') }}">
 					<i class="fa fa-users"></i>
 					<span>Companies</span>
